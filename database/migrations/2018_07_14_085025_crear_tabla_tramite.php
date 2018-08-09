@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CrearTablaTramite extends Migration
 {
@@ -40,9 +40,9 @@ class CrearTablaTramite extends Migration
                 ->on('cliente')
                 ->onDelete('cascade');
 
-            $table->string('observaciones', 250);
+            $table->string('observaciones', 250)->required(false);
 
-            $table->timestamps()->required(false);
+            $table->timestamps();
         });
     }
 

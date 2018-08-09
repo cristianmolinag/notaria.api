@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CrearTablaTiposDocumento extends Migration
+class CrearTablaTipoDocumento extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CrearTablaTiposDocumento extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_documento', function (Blueprint $table) {
+        Schema::create('tipo_documento', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre',100);
+            $table->string('nombre', 100);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CrearTablaTiposDocumento extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipos_documento');
+        Schema::dropIfExists('tipo_documento');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CrearTablaFuncionario extends Migration
 {
@@ -16,12 +16,14 @@ class CrearTablaFuncionario extends Migration
         Schema::create('funcionario', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('persona_id');
-            $table->string('firma');
+            $table->binary('firma');
+
             $table->foreign('persona_id')
                 ->references('id')
                 ->on('persona')
                 ->onDelete('cascade');
             $table->unsignedInteger('usuario_id');
+
             $table->foreign('usuario_id')
                 ->references('id')
                 ->on('usuario')

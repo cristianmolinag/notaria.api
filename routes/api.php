@@ -1,8 +1,5 @@
 <?php
 
-//Route::group(['prefix' => '/', 'middleware' => 'cors'], function($router)
-//{
-
 Route::group(['prefix' => 'usuario'], function ($router) {
     Route::post('/login', 'UsuarioController@login');
     Route::get('/permisos', 'UsuarioController@getPermisos');
@@ -159,6 +156,12 @@ Route::group(['prefix' => 'funcionario'], function ($router) {
         [
             //    'middleware' => 'permission:editar_usuario',
             'uses' => 'FuncionarioController@update',
+        ]);
+
+    Route::post('/login',
+        [
+            //     'middleware' => 'permission:crear_usuario',
+            'uses' => 'FuncionarioController@login',
         ]);
 });
 
@@ -322,4 +325,3 @@ Route::group(['prefix' => 'tramite'], function ($router) {
             'uses' => 'TramiteController@update',
         ]);
 });
-//});
