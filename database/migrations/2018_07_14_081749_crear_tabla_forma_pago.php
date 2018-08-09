@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CrearTablaSexo extends Migration
+class CrearTablaFormaPago extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CrearTablaSexo extends Migration
      */
     public function up()
     {
-        Schema::create('sexo', function (Blueprint $table) {
+        Schema::create('forma_pago', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre',100);
+            $table->string('nombre');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CrearTablaSexo extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sexo');
+        Schema::dropIfExists('forma_pago');
     }
 }

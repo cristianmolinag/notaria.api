@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sexo extends Model
+class Genero extends Model
 {
-    protected $table='sexo';
+    protected $table='genero';
 
     protected $fillable = [
         'nombre'

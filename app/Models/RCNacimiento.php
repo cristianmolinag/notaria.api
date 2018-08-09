@@ -1,19 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RegistroCivil extends Model
+class RCNacimiento extends Model
 {
-    protected $table='registro_civil';
+    protected $table='rc_nacimiento';
 
     protected $fillable = [
         'nombre',
         'fecha_nacimiento',
         'fecha_inscripcion',
         'firma_reconocimiento',
-        'sexo_id',
+        'genero_id',
         'persona_id',
         'madre_id',
         'padre_id',

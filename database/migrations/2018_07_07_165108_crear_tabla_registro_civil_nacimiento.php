@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CrearTablaRegistroCivil extends Migration
+class CrearTablaRegistroCivilNacimiento extends Migration
 {
     /**
      * Run the migrations.
@@ -13,27 +13,27 @@ class CrearTablaRegistroCivil extends Migration
      */
     public function up()
     {
-        Schema::create('registro_civil', function (Blueprint $table) {
+        Schema::create('rc_nacimiento', function (Blueprint $table) {
             $table->increments('id');
             $table->date('fecha_nacimiento');
             $table->date('fecha_inscripcion');
             $table->string('firma_reconocimiento');
-            $table->unsignedInteger('sexo_id');
-            $table->foreign('sexo_id')
+            $table->unsignedInteger('genero_id');
+            $table->foreign('genero_id')
                 ->references('id')
-                ->on('sexo')
+                ->on('genero')
                 ->onDelete('cascade');
             $table->unsignedInteger('persona_id');
             $table->foreign('persona_id')
                 ->references('id')
                 ->on('persona')
                 ->onDelete('cascade');
-            $table->unsignedInteger('madre_id');
+            $table->unsignedInteger('madre_id')->nullable();
             $table->foreign('madre_id')
                 ->references('id')
                 ->on('persona')
                 ->onDelete('cascade');
-            $table->unsignedInteger('padre_id');
+            $table->unsignedInteger('padre_id')->nullable();
             $table->foreign('padre_id')
                 ->references('id')
                 ->on('persona')
@@ -43,19 +43,19 @@ class CrearTablaRegistroCivil extends Migration
                 ->references('id')
                 ->on('persona')
                 ->onDelete('cascade');
-            $table->unsignedInteger('testigo1_id');
+            $table->unsignedInteger('testigo1_id')->nullable();
             $table->foreign('testigo1_id')
                 ->references('id')
                 ->on('persona')
                 ->onDelete('cascade')
                 ->nullable();
-            $table->unsignedInteger('testigo2_id');
+            $table->unsignedInteger('testigo2_id')->nullable();
             $table->foreign('testigo2_id')
                 ->references('id')
                 ->on('persona')
                 ->onDelete('cascade')
                 ->nullable();
-            $table->unsignedInteger('funcionario_autoriza_id');
+            $table->unsignedInteger('funcionario_autoriza_id')->nullable();
             $table->foreign('funcionario_autoriza_id')
                 ->references('id')
                 ->on('funcionario')
@@ -77,6 +77,6 @@ class CrearTablaRegistroCivil extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('registro_civil');
+        Schema::dropIfExists('rc_nacimiento');
     }
 }

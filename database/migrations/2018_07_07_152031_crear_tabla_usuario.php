@@ -15,8 +15,8 @@ class CrearTablaUsuario extends Migration
     {
         Schema::create('usuario', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('email',100)->unique();
-            $table->string('password');
+            $table->string('correo',100)->unique();
+            $table->string('contrasena');
             $table->rememberToken();
             $table->boolean('estado')->default(1);
             $table->timestamps();

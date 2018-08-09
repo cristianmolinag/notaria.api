@@ -3,77 +3,86 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Usuario;
+use App\Models\Usuario;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function index()
     {
         $usuarios = Usuario::All();
-        return $usuarios;
+        return self::validarRespuesta($usuarios);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $usuario = new Usuario;
-        $usuario->email = $request->correo;
-        $usuario->password = $request->contrasena;
+        $usuario->correo = $request->json('correo');
+        $usuario->remember_token = str_random(32);
+        $usuario->contrasena = self::encriptar($request->json('contrasena'));
+        $usuario->estado = $request->json('estado');
         $usuario->save();
 
-        return $usuario;
+        return self::validarRespuesta($usuario);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $usuario = Usuario::find($id);
-        return $usuario;
+        return self::validarRespuesta($usuario);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $usuario = Usuario::find($id);
-        $usuario->email = $request->correo;
-        $usuario->password = $request->contrasena;
-        $usuario->estado = $request->estado;
-        $usuario->save(); 
-        return $usuario;
+        $usuario->correo = $request->json('correo');
+        $usuario->activo = $request->json('activo');
+        if($request->json('contrasena') != "")
+        $usuario->contrasena = self::encriptar($request->json('contrasena'));
+        $usuario->save();
+
+        return self::validarRespuesta($usuario);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function getPermisos(Request $request){
+        $api_token = $request->header('Api-Token');
+        $usuario = Usuario::where('api_token', $api_token)->first();
+        $usuario->getAllPermissions();
+        return self::validarRespuesta($usuario);
+    }
+
+    private function validarRespuesta($data)
     {
-        $usuario = Usuario::find($id);
-        $usuario->estado = 0;
-        $usuario->save();
-        return $usuario;
+        if($data){
+            return Response()->json($data,201);
+        }
+        else{
+            return Response()->json("Error inesperado, por favor contacte con su administrador",404);
+        }
+    }
+
+    private function encriptar($contrasena)
+    {
+        return Hash::make($contrasena);
+    }
+
+    public function login(Request $request)
+    {
+        $usuario = Usuario::where('correo', $request->json('correo'))->first();
+        if($usuario)
+            if (Hash::check($request->json('contrasena'), $usuario->contrasena)) {
+
+                switch ($request->json('tipo')) {
+                    case 0: // cliente
+                        $usuario = Cliente::with('usuario','persona')->where('estado', 1)->where('usuario_id', '=',$usuario->id)->first();
+                        break;
+                    case 1: // funcionario
+                        $usuario = Funcionario::with('usuario', 'persona')->where('estado', 1)->where('usuario_id', '=',$usuario->id)->first();
+                        break;
+                }    
+                return self::validarRespuesta($usuario);
+            }
+        return response()->json("Usuario incorrecto", 202);   
     }
 }
