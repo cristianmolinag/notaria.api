@@ -1,327 +1,139 @@
 <?php
 
 Route::group(['prefix' => 'usuario'], function ($router) {
+
     Route::post('/login', 'UsuarioController@login');
-    Route::get('/permisos', 'UsuarioController@getPermisos');
 
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'UsuarioController@index',
-        ]);
+    Route::get('/', 'UsuarioController@index');
 
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'UsuarioController@find',
-        ]);
+    Route::get('/{id}', 'UsuarioController@find');
 
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'UsuarioController@create',
-        ]);
+    Route::post('/', 'UsuarioController@create');
 
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'UsuarioController@update',
-        ]);
+    Route::put('/{id}', 'UsuarioController@update');
 });
 
-Route::group(['prefix' => 'genero'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'GeneroController@index',
-        ]);
+Route::group(['prefix' => 'rol'], function ($router) {
 
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'GeneroController@find',
-        ]);
+    Route::get('/', 'RolController@index');
 
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'GeneroController@create',
-        ]);
+    Route::get('/{id}', 'RolController@find');
 
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'GeneroController@update',
-        ]);
+    Route::post('/', 'RolController@create');
+
+    Route::post('/usuario/{id}', 'RolController@create');
+
+    Route::put('/{id}', 'RolController@update');
 });
 
-Route::group(['prefix' => 'nacionalidad'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'NacionalidadController@index',
-        ]);
+Route::group(['prefix' => 'permiso'], function ($router) {
 
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'NacionalidadController@find',
-        ]);
+    Route::get('/', 'PermisoController@index');
 
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'NacionalidadController@create',
-        ]);
+    Route::get('/{id}', 'PermisoController@find');
 
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'NacionalidadController@update',
-        ]);
-});
+    Route::post('/', 'PermisoController@create');
 
-Route::group(['prefix' => 'tipo_documento'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'TipoDocumentoController@index',
-        ]);
+    Route::post('/rol/{id}', 'PermisoController@create');
 
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'TipoDocumentoController@find',
-        ]);
-
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'TipoDocumentoController@create',
-        ]);
-
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'TipoDocumentoController@update',
-        ]);
-});
-
-Route::group(['prefix' => 'persona'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'PersonaController@index',
-        ]);
-
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'PersonaController@find',
-        ]);
-
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'PersonaController@create',
-        ]);
-
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'PersonaController@update',
-        ]);
-});
-
-Route::group(['prefix' => 'funcionario'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'FuncionarioController@index',
-        ]);
-
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'FuncionarioController@find',
-        ]);
-
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'FuncionarioController@create',
-        ]);
-
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'FuncionarioController@update',
-        ]);
-
-    Route::post('/login',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'FuncionarioController@login',
-        ]);
-});
-
-Route::group(['prefix' => 'cliente'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'ClienteController@index',
-        ]);
-
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'ClienteController@find',
-        ]);
-
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'ClienteController@create',
-        ]);
-
-    Route::post('/login',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'ClienteController@login',
-        ]);
-
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'ClienteController@update',
-        ]);
-});
-
-Route::group(['prefix' => 'reg_nacimiento'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'RCNacimientoController@index',
-        ]);
-
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'RCNacimientoController@find',
-        ]);
-
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'RCNacimientoController@create',
-        ]);
-
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'RCNacimientoController@update',
-        ]);
+    Route::put('/{id}', 'PermisoController@update');
 });
 
 Route::group(['prefix' => 'forma_pago'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'FormaPagoController@index',
-        ]);
 
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'FormaPagoController@find',
-        ]);
+    Route::get('/', 'FormaPagoController@index');
 
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'FormaPagoController@create',
-        ]);
+    Route::get('/{id}', 'FormaPagoController@find');
 
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'FormaPagoController@update',
-        ]);
+    Route::post('/', 'FormaPagoController@create');
+
+    Route::put('/{id}', 'FormaPagoController@update');
 });
 
 Route::group(['prefix' => 'tipo_tramite'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'TipoTramiteController@index',
-        ]);
 
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'TipoTramiteController@find',
-        ]);
+    Route::get('/', 'TipoTramiteController@index');
 
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'TipoTramiteController@create',
-        ]);
+    Route::get('/{id}', 'TipoTramiteController@find');
 
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'TipoTramiteController@update',
-        ]);
+    Route::post('/', 'TipoTramiteController@create');
+
+    Route::put('/{id}', 'TipoTramiteController@update');
 });
+
+Route::group(['prefix' => 'tipo_documento'], function ($router) {
+
+    Route::get('/', 'TipoDocumentoController@index');
+
+    Route::get('/{id}', 'TipoDocumentoController@find');
+
+    Route::post('/', 'TipoDocumentoController@create');
+
+    Route::put('/{id}', 'TipoDocumentoController@update');
+});
+
 Route::group(['prefix' => 'estado_tramite'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'EstadoTramiteController@index',
-        ]);
 
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'EstadoTramiteController@find',
-        ]);
+    Route::get('/', 'EstadoTramiteController@index');
 
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'EstadoTramiteController@create',
-        ]);
+    Route::get('/{id}', 'EstadoTramiteController@find');
 
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'EstadoTramiteController@update',
-        ]);
+    Route::post('/', 'EstadoTramiteController@create');
+
+    Route::put('/{id}', 'EstadoTramiteController@update');
 });
 
-Route::group(['prefix' => 'tramite'], function ($router) {
-    Route::get('/',
-        [
-            //      'middleware' => 'permission:ver_usuarios',
-            'uses' => 'TramiteController@index',
-        ]);
+Route::group(['prefix' => 'pais'], function ($router) {
 
-    Route::get('/{id}',
-        [
-            //      'middleware' => 'permission:ver_usuario',
-            'uses' => 'TramiteController@find',
-        ]);
+    Route::get('/', 'PaisController@index');
 
-    Route::post('/',
-        [
-            //     'middleware' => 'permission:crear_usuario',
-            'uses' => 'TramiteController@create',
-        ]);
+    Route::get('/{id}', 'PaisController@find');
 
-    Route::put('/{id}',
-        [
-            //    'middleware' => 'permission:editar_usuario',
-            'uses' => 'TramiteController@update',
-        ]);
+    Route::post('/', 'PaisController@create');
+
+    Route::put('/{id}', 'PaisController@update');
+});
+
+Route::group(['prefix' => 'departamento'], function ($router) {
+
+    Route::get('/', 'DepartamentoController@index');
+
+    Route::get('/{id}', 'DepartamentoController@find');
+
+    Route::post('/', 'DepartamentoController@create');
+
+    Route::put('/{id}', 'DepartamentoController@update');
+});
+
+Route::group(['prefix' => 'municipio'], function ($router) {
+
+    Route::get('/', 'MunicipioController@index');
+
+    Route::get('/{id}', 'MunicipioController@find');
+
+    Route::post('/', 'MunicipioController@create');
+
+    Route::put('/{id}', 'MunicipioController@update');
+});
+
+Route::group(['prefix' => 'corregimiento'], function ($router) {
+
+    Route::get('/', 'CorregimientoController@index');
+
+    Route::get('/{id}', 'CorregimientoController@find');
+
+    Route::post('/', 'CorregimientoController@create');
+
+    Route::put('/{id}', 'CorregimientoController@update');
+});
+
+Route::group(['prefix' => 'rc_nacimiento'], function ($router) {
+
+    Route::get('/', 'RCNacimientoController@index');
+
+    Route::get('/{id}', 'RCNacimientoController@find');
+
+    Route::post('/', 'RCNacimientoController@create');
+
+    Route::put('/{id}', 'RCNacimientoController@update');
 });

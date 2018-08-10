@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\RCNacimiento;
+use Illuminate\Http\Request;
 
 class RCNacimientoController extends Controller
 {
-    public function index(){ //listado de Registro de nacimiento
+    public function index()
+    { //listado de Registro de nacimiento
 
         $reg_nacimiento = RCNacimiento::All();
         return self::validarRespuesta($reg_nacimiento);
     }
 
-    public function create(Request $request){
-        
+    public function create(Request $request)
+    {
+
         $reg_nacimiento = new RCNacimiento;
-        
+
         $reg_nacimiento->fecha_nacimiento = $request->json('fecha_nacimiento');
         $reg_nacimiento->fecha_inscripcion = $request->json('fecha_inscripcion');
         $reg_nacimiento->firma_reconocimiento = $request->json('firma_reconocimiento');
@@ -31,17 +33,30 @@ class RCNacimientoController extends Controller
         $reg_nacimiento->funcionario_tramite_id = $request->json('funcionario_tramite_id');
         $reg_nacimiento->notas = $request->json('notas');
         $reg_nacimiento->save();
-        
+
         return self::validarRespuesta($reg_nacimiento);
     }
 
-    public function find($id){
+    public function find()
+    {
+        $id = "hola";
 
-        $reg_nacimiento = RCNacimiento::find($id);
-        return self::validarRespuesta($reg_nacimiento);
+        $columns = ['nuip', 'primer_apellido', 'segundo_apellido', 'nombres', 'fecha_nacimiento'];
+
+        $query = RCNacimiento::select('*');
+
+        foreach ($columns as $column) {
+            $query->where($column, '=', $id);
+        }
+
+        $models = $query->get();
+        return $models;
+        // $reg_nacimiento = RCNacimiento::find($id);
+        // return self::validarRespuesta($reg_nacimiento);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
 
         $reg_nacimiento = RCNacimiento::find($id);
 
@@ -57,7 +72,7 @@ class RCNacimientoController extends Controller
         $reg_nacimiento->testigo2_id = $request->json('testigo2_id');
         $reg_nacimiento->funcionario_autoriza_id = $request->json('funcionario_autoriza_id');
         $reg_nacimiento->funcionario_tramite_id = $request->json('funcionario_tramite_id');
-        $reg_nacimiento->notas= $request->json('notas');
+        $reg_nacimiento->notas = $request->json('notas');
         $reg_nacimiento->save();
 
         return self::validarRespuesta($reg_nacimiento);
@@ -65,11 +80,10 @@ class RCNacimientoController extends Controller
 
     private function validarRespuesta($data)
     {
-        if($data){
-            return Response()->json($data,200);
-        }
-        else{
-            return Response()->json("Error inesperado, por favor contacte con su administrador",404);
+        if ($data) {
+            return Response()->json($data, 200);
+        } else {
+            return Response()->json("Error inesperado, por favor contacte con su administrador", 404);
         }
     }
 }

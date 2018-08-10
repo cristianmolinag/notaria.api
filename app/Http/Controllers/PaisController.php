@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FormaPago;
+use App\Models\Pais;
 use Illuminate\Http\Request;
 
-class FormaPagoController extends Controller
+class PaisController extends Controller
 {
     public function index()
     {
 
-        $data = FormaPago::All();
+        $data = Pais::All();
 
         return response()->json([
             'data' => $data,
@@ -21,7 +21,7 @@ class FormaPagoController extends Controller
     {
         try {
 
-            $data = new FormaPago;
+            $data = new Pais;
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -31,7 +31,7 @@ class FormaPagoController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando la forma de pago',
+                'mensaje' => 'Error creando el país',
                 'data' => $ex,
             ]);
 
@@ -40,7 +40,7 @@ class FormaPagoController extends Controller
 
     public function find($id)
     {
-        $data = FormaPago::find($id);
+        $data = Pais::find($id);
 
         return response()->json([
             'data' => $data,
@@ -52,7 +52,7 @@ class FormaPagoController extends Controller
     {
         try {
 
-            $data = FormaPago::find($id);
+            $data = Pais::find($id);
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -62,7 +62,7 @@ class FormaPagoController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error editando la forma de pago',
+                'mensaje' => 'Error editando el país',
                 'data' => $ex,
             ]);
 

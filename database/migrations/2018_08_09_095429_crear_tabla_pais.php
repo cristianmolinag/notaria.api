@@ -4,21 +4,29 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CrearTablaTipoTramite extends Migration
+class CrearTablaPais extends Migration
 {
-
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
-        Schema::create('tipo_tramite', function (Blueprint $table) {
+        Schema::create('pais', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre')->unique();
-            $table->integer('valor');
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('tipo_tramite');
+        Schema::dropIfExists('pais');
     }
 }

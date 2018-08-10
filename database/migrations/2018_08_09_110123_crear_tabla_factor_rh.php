@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CrearTablaNacionalidad extends Migration
+class CrearTablaFactorRh extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CrearTablaNacionalidad extends Migration
      */
     public function up()
     {
-        Schema::create('nacionalidad', function (Blueprint $table) {
+        Schema::create('factor_rh', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre',100);
+            $table->string('nombre')->unique();
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CrearTablaNacionalidad extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nacionalidad');
+        Schema::dropIfExists('factor_rh');
     }
 }

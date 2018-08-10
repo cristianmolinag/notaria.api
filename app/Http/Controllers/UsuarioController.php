@@ -2,87 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Rol;
 use App\Models\Usuario;
+use App\Models\UsuarioRol;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
- 
+
     public function index()
     {
-        $usuarios = Usuario::All();
-        return self::validarRespuesta($usuarios);
+        $data = Usuario::All();
+
+        return response()->json([
+            'data' => $data,
+        ], 200);
     }
 
     public function create(Request $request)
     {
-        $usuario = new Usuario;
-        $usuario->correo = $request->json('correo');
-        $usuario->remember_token = str_random(32);
-        $usuario->contrasena = self::encriptar($request->json('contrasena'));
-        $usuario->estado = $request->json('estado');
-        $usuario->save();
+        try {
+            $usuario = new Usuario;
+            $rol = Rol::find($request->json('rol_id'));
 
-        return self::validarRespuesta($usuario);
-    }
+            DB::transaction(function () use ($request, $usuario, $rol) {
 
-    public function show($id)
-    {
-        $usuario = Usuario::find($id);
-        return self::validarRespuesta($usuario);
-    }
+                $usuario->correo = $request->json('correo');
+                $usuario->nombres = $request->json('nombres');
+                $usuario->apellidos = $request->json('apellidos');
+                $usuario->contrasena = Hash::make($request->json('contrasena'));
+                $usuario->remember_token = str_random(32);
+                $usuario->save();
 
-    public function update(Request $request, $id)
-    {
-        $usuario = Usuario::find($id);
-        $usuario->correo = $request->json('correo');
-        $usuario->activo = $request->json('activo');
-        if($request->json('contrasena') != "")
-        $usuario->contrasena = self::encriptar($request->json('contrasena'));
-        $usuario->save();
+                $usuario_rol = new UsuarioRol;
+                $usuario_rol->rol_id = $rol->id;
+                $usuario_rol->usuario_id = $usuario->id;
+                $usuario_rol->save();
 
-        return self::validarRespuesta($usuario);
-    }
+            });
+            return response()->json([
+                'data' => $usuario,
+            ], 200);
 
-    public function getPermisos(Request $request){
-        $api_token = $request->header('Api-Token');
-        $usuario = Usuario::where('api_token', $api_token)->first();
-        $usuario->getAllPermissions();
-        return self::validarRespuesta($usuario);
-    }
-
-    private function validarRespuesta($data)
-    {
-        if($data){
-            return Response()->json($data,201);
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error creando el usuario',
+                'data' => $ex,
+            ]);
         }
-        else{
-            return Response()->json("Error inesperado, por favor contacte con su administrador",404);
-        }
-    }
-
-    private function encriptar($contrasena)
-    {
-        return Hash::make($contrasena);
     }
 
     public function login(Request $request)
     {
         $usuario = Usuario::where('correo', $request->json('correo'))->first();
-        if($usuario)
+        if ($usuario) {
             if (Hash::check($request->json('contrasena'), $usuario->contrasena)) {
-
-                switch ($request->json('tipo')) {
-                    case 0: // cliente
-                        $usuario = Cliente::with('usuario','persona')->where('estado', 1)->where('usuario_id', '=',$usuario->id)->first();
-                        break;
-                    case 1: // funcionario
-                        $usuario = Funcionario::with('usuario', 'persona')->where('estado', 1)->where('usuario_id', '=',$usuario->id)->first();
-                        break;
-                }    
-                return self::validarRespuesta($usuario);
+                return response()->json([
+                    'data' => $usuario,
+                ], 200);
             }
-        return response()->json("Usuario incorrecto", 202);   
+        }
+
+        return response()->json([
+            'mensaje' => 'Usuario incorrecto',
+        ]);
     }
 }
