@@ -83,6 +83,17 @@ Route::group(['prefix' => 'estado_tramite'], function ($router) {
     Route::put('/{id}', 'EstadoTramiteController@update');
 });
 
+Route::group(['prefix' => 'firma'], function ($router) {
+
+    Route::get('/', 'firmaController@index');
+
+    Route::get('/{id}', 'firmaController@find');
+
+    Route::post('/', 'firmaController@create');
+
+    Route::put('/{id}', 'firmaController@update');
+});
+
 Route::group(['prefix' => 'pais'], function ($router) {
 
     Route::get('/', 'PaisController@index');
@@ -125,6 +136,50 @@ Route::group(['prefix' => 'corregimiento'], function ($router) {
     Route::post('/', 'CorregimientoController@create');
 
     Route::put('/{id}', 'CorregimientoController@update');
+});
+
+Route::group(['prefix' => 'antecedente'], function ($router) {
+
+    Route::get('/', 'AntecendeteController@index');
+
+    Route::get('/{id}', 'AntecendeteController@find');
+
+    Route::post('/', 'AntecendeteController@create');
+
+    Route::put('/{id}', 'AntecendeteController@update');
+});
+
+Route::group(['prefix' => 'genero'], function ($router) {
+
+    Route::get('/', 'GeneroController@index');
+
+    Route::get('/{id}', 'GeneroController@find');
+
+    Route::post('/', 'GeneroController@create');
+
+    Route::put('/{id}', 'GeneroController@update');
+});
+
+Route::group(['prefix' => 'grupo_sanguineo'], function ($router) {
+
+    Route::get('/', 'GrupoSanguineoController@index');
+
+    Route::get('/{id}', 'GrupoSanguineoController@find');
+
+    Route::post('/', 'GrupoSanguineoController@create');
+
+    Route::put('/{id}', 'GrupoSanguineoController@update');
+});
+
+Route::group(['prefix' => 'factor_rh'], function ($router) {
+
+    Route::get('/', 'FactorRHController@index');
+
+    Route::get('/{id}', 'FactorRHController@find');
+
+    Route::post('/', 'FactorRHController@create');
+
+    Route::put('/{id}', 'FactorRHController@update');
 });
 
 Route::group(['prefix' => 'rc_nacimiento'], function ($router) {
