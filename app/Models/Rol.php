@@ -20,4 +20,14 @@ class UsuarioRol extends Model
     protected $fillable = [
         'usuario_id', 'rol_id',
     ];
+
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class);
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class);
+    }
 }

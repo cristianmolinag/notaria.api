@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pais;
+use App\Models\FactorRH;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class PaisController extends Controller
+class FactorRHController extends Controller
 {
     public function index()
     {
 
-        $data = Pais::with('departamento')->get();
+        $data = FactorRH::All();
 
         return response()->json([
             'data' => $data,
@@ -22,7 +22,7 @@ class PaisController extends Controller
     {
         try {
 
-            $data = new Pais;
+            $data = new FactorRH;
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -32,7 +32,7 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando el país',
+                'mensaje' => 'Error creando el factor RH',
                 'data' => $ex,
             ]);
 
@@ -41,7 +41,7 @@ class PaisController extends Controller
 
     public function find($id)
     {
-        $data = Pais::find($id);
+        $data = FactorRH::find($id);
 
         return response()->json([
             'data' => $data,
@@ -53,7 +53,7 @@ class PaisController extends Controller
     {
         try {
 
-            $data = Pais::find($id);
+            $data = FactorRH::find($id);
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -63,11 +63,10 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error editando el país',
+                'mensaje' => 'Error editando el factor RH',
                 'data' => $ex,
             ]);
 
         }
     }
-
 }

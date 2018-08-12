@@ -3,87 +3,73 @@
 namespace App\Http\Controllers;
 
 use App\Models\RCNacimiento;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class RCNacimientoController extends Controller
 {
     public function index()
-    { //listado de Registro de nacimiento
+    {
+        $data = RCNacimiento::All();
 
-        $reg_nacimiento = RCNacimiento::All();
-        return self::validarRespuesta($reg_nacimiento);
+        return response()->json([
+            'data' => $data,
+        ], 200);
+
     }
 
     public function create(Request $request)
     {
+        try {
+            $registro = new RCNacimiento();
 
-        $reg_nacimiento = new RCNacimiento;
+            $registro->nuip = $request->json('nuip');
+            $registro->indicativo_serial = $request->json('indicativo_serial');
+            $registro->primer_apellido = $request->json('primer_apellido');
+            $registro->segundo_apellido = $request->json('segundo_apellido');
+            $registro->nombres = $request->json('nombres');
+            $registro->fecha_nacimiento = $request->json('fecha_nacimiento');
+            $registro->genero_id = $request->json('genero_id');
+            $registro->grupo_sanguineo_id = $request->json('grupo_sanguineo_id');
+            $registro->factor_rh_id = $request->json('factor_rh_id');
+            $registro->lugar_nacimiento = $request->json('lugar_nacimiento', "la veredita");
+            $registro->antecedente_id = $request->json('antecedente_id');
+            $registro->num_nacido_vivo = $request->json('num_nacido_vivo');
+            $registro->nombres_madre = $request->json('nombres_madre');
+            $registro->tipo_documento_madre_id = $request->json('tipo_documento_madre_id');
+            $registro->documento_madre = $request->json('documento_madre');
+            $registro->pais_madre_id = $request->json('pais_madre_id');
+            $registro->nombres_padre = $request->json('nombres_padre', null);
+            $registro->tipo_documento_padre_id = $request->json('tipo_documento_padre_id', null);
+            $registro->documento_padre = $request->json('documento_padre', null);
+            $registro->pais_padre_id = $request->json('pais_padre_id', null);
+            $registro->nombres_declarante = $request->json('nombres_declarante');
+            $registro->tipo_documento_declarante_id = $request->json('tipo_documento_declarante_id');
+            $registro->documento_declarante = $request->json('documento_declarante');
+            $registro->firma_declarante = $request->json('firma_declarante');
+            $registro->nombres_testigo_uno = $request->json('nombres_testigo_uno', null);
+            $registro->tipo_documento_testigo_uno_id = $request->json('tipo_documento_testigo_uno_id', null);
+            $registro->documento_testigo_uno = $request->json('nomdocumento_testigo_unobre', null);
+            $registro->firma_testigo_uno = $request->json('firma_testigo_uno', null);
+            $registro->nombres_testigo_dos = $request->json('nombres_testigo_dos', null);
+            $registro->tipo_documento_testigo_dos_id = $request->json('tipo_documento_testigo_dos_id', null);
+            $registro->documento_testigo_dos = $request->json('documento_testigo_dos', null);
+            $registro->firma_testigo_dos = $request->json('firma_testigo_dos', null);
+            $registro->notas_marginales = $request->json('notas_marginales', null);
+            $registro->save();
 
-        $reg_nacimiento->fecha_nacimiento = $request->json('fecha_nacimiento');
-        $reg_nacimiento->fecha_inscripcion = $request->json('fecha_inscripcion');
-        $reg_nacimiento->firma_reconocimiento = $request->json('firma_reconocimiento');
-        $reg_nacimiento->genero_id = $request->json('genero_id');
-        $reg_nacimiento->persona_id = $request->json('persona_id');
-        $reg_nacimiento->madre_id = $request->json('madre_id');
-        $reg_nacimiento->padre_id = $request->json('padre_id');
-        $reg_nacimiento->declarante_id = $request->json('declarante_id');
-        $reg_nacimiento->testigo1_id = $request->json('testigo1_id');
-        $reg_nacimiento->testigo2_id = $request->json('testigo2_id');
-        $reg_nacimiento->funcionario_autoriza_id = $request->json('funcionario_autoriza_id');
-        $reg_nacimiento->funcionario_tramite_id = $request->json('funcionario_tramite_id');
-        $reg_nacimiento->notas = $request->json('notas');
-        $reg_nacimiento->save();
+            return response()->json([
+                'data' => $registro,
+            ], 200);
 
-        return self::validarRespuesta($reg_nacimiento);
-    }
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error creando el registro civil',
+                'data' => $ex,
+            ]);
 
-    public function find()
-    {
-        $id = "hola";
-
-        $columns = ['nuip', 'primer_apellido', 'segundo_apellido', 'nombres', 'fecha_nacimiento'];
-
-        $query = RCNacimiento::select('*');
-
-        foreach ($columns as $column) {
-            $query->where($column, '=', $id);
         }
 
-        $models = $query->get();
-        return $models;
-        // $reg_nacimiento = RCNacimiento::find($id);
-        // return self::validarRespuesta($reg_nacimiento);
     }
 
-    public function update(Request $request, $id)
-    {
-
-        $reg_nacimiento = RCNacimiento::find($id);
-
-        $reg_nacimiento->fecha_nacimiento = $request->json('fecha_nacimiento');
-        $reg_nacimiento->fecha_inscripcion = $request->json('fecha_inscripcion');
-        $reg_nacimiento->firma_reconocimiento = $request->json('firma_reconocimiento');
-        $reg_nacimiento->genero_id = $request->json('genero_id');
-        $reg_nacimiento->persona_id = $request->json('persona_id');
-        $reg_nacimiento->madre_id = $request->json('madre_id');
-        $reg_nacimiento->padre_id = $request->json('padre_id');
-        $reg_nacimiento->declarante_id = $request->json('declarante_id');
-        $reg_nacimiento->testigo1_id = $request->json('testigo1_id');
-        $reg_nacimiento->testigo2_id = $request->json('testigo2_id');
-        $reg_nacimiento->funcionario_autoriza_id = $request->json('funcionario_autoriza_id');
-        $reg_nacimiento->funcionario_tramite_id = $request->json('funcionario_tramite_id');
-        $reg_nacimiento->notas = $request->json('notas');
-        $reg_nacimiento->save();
-
-        return self::validarRespuesta($reg_nacimiento);
-    }
-
-    private function validarRespuesta($data)
-    {
-        if ($data) {
-            return Response()->json($data, 200);
-        } else {
-            return Response()->json("Error inesperado, por favor contacte con su administrador", 404);
-        }
-    }
 }

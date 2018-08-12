@@ -2,50 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Genero;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class GeneroController extends Controller
 {
-    public function index(){ //listado de generos
-
-        $generos = Genero::All();
-        return self::validarRespuesta($generos);
-    } 
-
-    public function create(Request $request){
-        
-        $genero = new Genero;
-        $genero->nombre = $request->json('nombre');
-        $genero->save();
-        
-        return self::validarRespuesta($genero);
-    }
-
-    public function find($id){
-
-        $genero = Genero::find($id);
-        return self::validarRespuesta($genero);
-    }
-
-    public function update(Request $request, $id){
-
-        $genero = Genero::find($id);
-        $genero->nombre = $request->json('nombre');
-        $genero->save();
-
-        return self::validarRespuesta($genero);
-    }
-
-    private function validarRespuesta($data)
+    public function index()
     {
-        if($data){
-            return Response()->json($data,200);
-        }
-        else{
-            return Response()->json("Error inesperado, por favor contacte con su administrador",404);
+
+        $data = Genero::All();
+
+        return response()->json([
+            'data' => $data,
+        ], 200);
+    }
+
+    public function create(Request $request)
+    {
+        try {
+
+            $data = new Genero;
+            $data->nombre = $request->json('nombre');
+            $data->save();
+
+            return response()->json([
+                'data' => $data,
+            ], 200);
+
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error creando el genero',
+                'data' => $ex,
+            ]);
+
         }
     }
 
+    public function find($id)
+    {
+        $data = Genero::find($id);
 
+        return response()->json([
+            'data' => $data,
+        ], 200);
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+
+            $data = Genero::find($id);
+            $data->nombre = $request->json('nombre');
+            $data->save();
+
+            return response()->json([
+                'data' => $data,
+            ], 200);
+
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error editando el genero',
+                'data' => $ex,
+            ]);
+
+        }
+    }
 }

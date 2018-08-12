@@ -2,48 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\EstadoTramite;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class EstadoTramiteController extends Controller
 {
-    public function index(){ //listado de estados de tramite
-
-        $estadoTramite = EstadoTramite::All();
-        return self::validarRespuesta($estadoTramite);
-    } 
-
-    public function create(Request $request){
-        
-        $estadoTramite = new EstadoTramite;
-        $estadoTramite->nombre = $request->json('nombre');
-        $estadoTramite->save();
-        
-        return self::validarRespuesta($estadoTramite);
-    }
-
-    public function find($id){
-
-        $estadoTramite = EstadoTramite::find($id);
-        return self::validarRespuesta($estadoTramite);
-    }
-
-    public function update(Request $request, $id){
-
-        $estadoTramite = EstadoTramite::find($id);
-        $estadoTramite->nombre = $request->json('nombre');
-        $estadoTramite->save();
-
-        return self::validarRespuesta($estadoTramite);
-    }
-
-    private function validarRespuesta($data)
+    public function index()
     {
-        if($data){
-            return Response()->json($data,200);
+
+        $data = EstadoTramite::All();
+
+        return response()->json([
+            'data' => $data,
+        ], 200);
+    }
+
+    public function create(Request $request)
+    {
+        try {
+
+            $data = new EstadoTramite;
+            $data->nombre = $request->json('nombre');
+            $data->save();
+
+            return response()->json([
+                'data' => $data,
+            ], 200);
+
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error creando el estado de trámite',
+                'data' => $ex,
+            ]);
+
         }
-        else{
-            return Response()->json("Error inesperado, por favor contacte con su administrador",404);
+    }
+
+    public function find($id)
+    {
+        $data = EstadoTramite::find($id);
+
+        return response()->json([
+            'data' => $data,
+        ], 200);
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+
+            $data = EstadoTramite::find($id);
+            $data->nombre = $request->json('nombre');
+            $data->save();
+
+            return response()->json([
+                'data' => $data,
+            ], 200);
+
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error editando el estado de tramite',
+                'data' => $ex,
+            ]);
+
         }
     }
 }

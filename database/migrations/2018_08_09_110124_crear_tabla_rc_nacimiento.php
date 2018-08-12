@@ -48,14 +48,14 @@ class CrearTablaRcNacimiento extends Migration
             $table->unsignedInteger('pais_madre_id');
             $table->foreign('pais_madre_id')->references('id')->on('pais')->onDelete('cascade');
 
-            $table->string('nombres_padre');
+            $table->string('nombres_padre')->nullable(true);
 
-            $table->unsignedInteger('tipo_documento_padre_id');
+            $table->unsignedInteger('tipo_documento_padre_id')->nullable(true);
             $table->foreign('tipo_documento_padre_id')->references('id')->on('tipo_documento')->onDelete('cascade');
 
-            $table->integer('documento_padre');
+            $table->integer('documento_padre')->nullable(true);
 
-            $table->unsignedInteger('pais_padre_id');
+            $table->unsignedInteger('pais_padre_id')->nullable(true);
             $table->foreign('pais_padre_id')->references('id')->on('pais')->onDelete('cascade');
 
             $table->string('nombres_declarante');
@@ -67,28 +67,28 @@ class CrearTablaRcNacimiento extends Migration
 
             $table->binary('firma_declarante');
 
-            $table->string('nombres_testigo_uno')->required(false);
+            $table->string('nombres_testigo_uno')->nullable(true);
 
-            $table->unsignedInteger('tipo_documento_testigo_uno_id')->required(false);
+            $table->unsignedInteger('tipo_documento_testigo_uno_id')->nullable(true);
             $table->foreign('tipo_documento_testigo_uno_id')->references('id')->on('tipo_documento')->onDelete('cascade');
 
-            $table->integer('documento_testigo_uno')->required(false);
+            $table->integer('documento_testigo_uno')->nullable(true);
 
-            $table->binary('firma_testigo_uno')->required(false);
+            $table->binary('firma_testigo_uno')->nullable(true);
 
-            $table->string('nombres_testigo_dos')->required(false);
+            $table->string('nombres_testigo_dos')->nullable(true);
 
-            $table->unsignedInteger('tipo_documento_testigo_dos_id')->required(false);
+            $table->unsignedInteger('tipo_documento_testigo_dos_id')->nullable(true);
             $table->foreign('tipo_documento_testigo_dos_id')->references('id')->on('tipo_documento')->onDelete('cascade');
 
-            $table->integer('documento_testigo_dos')->required(false);
+            $table->integer('documento_testigo_dos')->nullable(true);
 
-            $table->binary('firma_testigo_dos')->required(false);
+            $table->binary('firma_testigo_dos')->nullable(true);
 
-            $table->unsignedInteger('firma_id')->required(false);
+            $table->unsignedInteger('firma_id')->nullable(true);
             $table->foreign('firma_id')->references('id')->on('firma')->onDelete('cascade');
 
-            $table->string('notas_marginales');
+            $table->string('notas_marginales')->nullable(true);
 
             $table->timestamps();
         });

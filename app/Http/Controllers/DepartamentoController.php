@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pais;
+use App\Models\Departamento;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class PaisController extends Controller
+class DepartamentoController extends Controller
 {
     public function index()
     {
 
-        $data = Pais::with('departamento')->get();
+        $data = Departamento::with('pais')->get();
 
         return response()->json([
             'data' => $data,
@@ -22,17 +22,18 @@ class PaisController extends Controller
     {
         try {
 
-            $data = new Pais;
+            $data = new Departamento;
             $data->nombre = $request->json('nombre');
+            $data->pais_id = $request->json('pais_id');
             $data->save();
 
             return response()->json([
-                'data' => $data,
+                'data' => $data->with('pais')->first(),
             ], 200);
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando el país',
+                'mensaje' => 'Error creando el departamento',
                 'data' => $ex,
             ]);
 
@@ -41,10 +42,10 @@ class PaisController extends Controller
 
     public function find($id)
     {
-        $data = Pais::find($id);
+        $data = Departamento::find($id);
 
         return response()->json([
-            'data' => $data,
+            'data' => $data->with('pais')->first(),
         ], 200);
 
     }
@@ -53,21 +54,21 @@ class PaisController extends Controller
     {
         try {
 
-            $data = Pais::find($id);
+            $data = Departamento::find($id);
             $data->nombre = $request->json('nombre');
+            $data->pais_id = $request->json('pais_id');
             $data->save();
 
             return response()->json([
-                'data' => $data,
+                'data' => $data->with('pais')->first(),
             ], 200);
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error editando el país',
+                'mensaje' => 'Error editando el departamento',
                 'data' => $ex,
             ]);
 
         }
     }
-
 }

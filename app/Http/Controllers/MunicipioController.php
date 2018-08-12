@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pais;
+use App\Models\Municipio;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class PaisController extends Controller
+class MunicipioController extends Controller
 {
     public function index()
     {
 
-        $data = Pais::with('departamento')->get();
+        $data = Municipio::with('departamento')->get();
 
         return response()->json([
             'data' => $data,
@@ -22,17 +22,18 @@ class PaisController extends Controller
     {
         try {
 
-            $data = new Pais;
+            $data = new Municipio;
             $data->nombre = $request->json('nombre');
+            $data->departamento_id = $request->json('departamento_id');
             $data->save();
 
             return response()->json([
-                'data' => $data,
+                'data' => $data->with('departamento')->first(),
             ], 200);
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando el país',
+                'mensaje' => 'Error creando el Municipio',
                 'data' => $ex,
             ]);
 
@@ -41,10 +42,10 @@ class PaisController extends Controller
 
     public function find($id)
     {
-        $data = Pais::find($id);
+        $data = Municipio::find($id);
 
         return response()->json([
-            'data' => $data,
+            'data' => $data->with('departamento')->first(),
         ], 200);
 
     }
@@ -53,21 +54,21 @@ class PaisController extends Controller
     {
         try {
 
-            $data = Pais::find($id);
+            $data = Municipio::find($id);
             $data->nombre = $request->json('nombre');
+            $data->departamento_id = $request->json('departamento_id');
             $data->save();
 
             return response()->json([
-                'data' => $data,
+                'data' => $data->with('departamento')->first(),
             ], 200);
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error editando el país',
+                'mensaje' => 'Error editando el Municipio',
                 'data' => $ex,
             ]);
 
         }
     }
-
 }

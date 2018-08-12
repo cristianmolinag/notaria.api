@@ -2,15 +2,24 @@
 
 Route::group(['prefix' => 'usuario'], function ($router) {
 
-    Route::post('/login', 'UsuarioController@login');
+    Route::post('/login/cliente', 'UsuarioController@loginCliente');
+
+    Route::post('/registro/cliente', 'UsuarioController@registroCliente');
+
+    Route::post('/login/funcionario', 'UsuarioController@loginFuncionario');
+
+    Route::post('/registro/funcionario', 'UsuarioController@registroFuncionario');
 
     Route::get('/', 'UsuarioController@index');
 
-    Route::get('/{id}', 'UsuarioController@find');
+    Route::get('/funcionario', 'UsuarioController@indexFuncionario');
 
-    Route::post('/', 'UsuarioController@create');
+    Route::get('/funcionario/{id}', 'UsuarioController@findFuncionario');
 
-    Route::put('/{id}', 'UsuarioController@update');
+    Route::get('/cliente', 'UsuarioController@indexCliente');
+
+    Route::get('/cliente/{id}', 'UsuarioController@findCliente');
+
 });
 
 Route::group(['prefix' => 'rol'], function ($router) {
@@ -24,6 +33,17 @@ Route::group(['prefix' => 'rol'], function ($router) {
     Route::post('/usuario/{id}', 'RolController@create');
 
     Route::put('/{id}', 'RolController@update');
+});
+
+Route::group(['prefix' => 'perfil'], function ($router) {
+
+    Route::get('/', 'PerfilController@index');
+
+    Route::get('/{id}', 'PerfilController@find');
+
+    Route::post('/', 'PerfilController@create');
+
+    Route::put('/{id}', 'PerfilController@update');
 });
 
 Route::group(['prefix' => 'permiso'], function ($router) {
@@ -140,13 +160,13 @@ Route::group(['prefix' => 'corregimiento'], function ($router) {
 
 Route::group(['prefix' => 'antecedente'], function ($router) {
 
-    Route::get('/', 'AntecendeteController@index');
+    Route::get('/', 'AntecedenteController@index');
 
-    Route::get('/{id}', 'AntecendeteController@find');
+    Route::get('/{id}', 'AntecedenteController@find');
 
-    Route::post('/', 'AntecendeteController@create');
+    Route::post('/', 'AntecedenteController@create');
 
-    Route::put('/{id}', 'AntecendeteController@update');
+    Route::put('/{id}', 'AntecedenteController@update');
 });
 
 Route::group(['prefix' => 'genero'], function ($router) {

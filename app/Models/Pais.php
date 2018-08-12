@@ -11,4 +11,9 @@ class Pais extends Model
     protected $fillable = [
         'nombre',
     ];
+
+    public function departamento()
+    {
+        return $this->hasMany(Departamento::class)->with('municipio');
+    }
 }

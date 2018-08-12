@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pais;
+use App\Models\Perfil;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class PaisController extends Controller
+class PerfilController extends Controller
 {
     public function index()
     {
+        $data = Perfil::All();
 
-        $data = Pais::with('departamento')->get();
+        return response()->json([
+            'data' => $data,
+        ], 200);
+    }
+
+    public function find($id)
+    {
+
+        $data = Perfil::find($id);
 
         return response()->json([
             'data' => $data,
@@ -20,9 +29,11 @@ class PaisController extends Controller
 
     public function create(Request $request)
     {
+
         try {
 
-            $data = new Pais;
+            $data = new Perfil();
+
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -32,28 +43,18 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando el país',
+                'mensaje' => 'Error creando el perfil',
                 'data' => $ex,
             ]);
-
         }
-    }
-
-    public function find($id)
-    {
-        $data = Pais::find($id);
-
-        return response()->json([
-            'data' => $data,
-        ], 200);
-
     }
 
     public function update(Request $request, $id)
     {
         try {
 
-            $data = Pais::find($id);
+            $data = Perfil::find($id);
+
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -63,11 +64,9 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error editando el país',
+                'mensaje' => 'Error creando el perfil',
                 'data' => $ex,
             ]);
-
         }
     }
-
 }

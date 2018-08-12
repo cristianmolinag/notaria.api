@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pais;
+use App\Models\Antecedente;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class PaisController extends Controller
+class AntecedenteController extends Controller
 {
     public function index()
     {
 
-        $data = Pais::with('departamento')->get();
+        $data = Antecedente::All();
 
         return response()->json([
             'data' => $data,
@@ -22,7 +22,7 @@ class PaisController extends Controller
     {
         try {
 
-            $data = new Pais;
+            $data = new Antecedente;
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -32,7 +32,7 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando el país',
+                'mensaje' => 'Error creando el Antecedente',
                 'data' => $ex,
             ]);
 
@@ -41,7 +41,7 @@ class PaisController extends Controller
 
     public function find($id)
     {
-        $data = Pais::find($id);
+        $data = Antecedente::find($id);
 
         return response()->json([
             'data' => $data,
@@ -53,7 +53,7 @@ class PaisController extends Controller
     {
         try {
 
-            $data = Pais::find($id);
+            $data = Antecedente::find($id);
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -63,11 +63,10 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error editando el país',
+                'mensaje' => 'Error editando el Antecedente',
                 'data' => $ex,
             ]);
 
         }
     }
-
 }

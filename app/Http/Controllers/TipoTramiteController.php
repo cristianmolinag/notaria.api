@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TipoTramite;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class TipoTramiteController extends Controller
@@ -22,6 +23,7 @@ class TipoTramiteController extends Controller
 
             $rol = new TipoTramite;
             $rol->nombre = $request->json('nombre');
+            $rol->valor = $request->json('valor');
             $rol->save();
 
             return response()->json([
@@ -42,6 +44,7 @@ class TipoTramiteController extends Controller
 
             $rol = TipoTramite::find($id);
             $rol->nombre = $request->json('nombre');
+            $rol->valor = $request->json('valor');
             $rol->save();
 
             return response()->json([

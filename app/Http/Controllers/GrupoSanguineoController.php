@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pais;
+use App\Models\GrupoSanguineo;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class PaisController extends Controller
+class GrupoSanguineoController extends Controller
 {
+
     public function index()
     {
 
-        $data = Pais::with('departamento')->get();
+        $data = GrupoSanguineo::All();
 
         return response()->json([
             'data' => $data,
@@ -22,7 +23,7 @@ class PaisController extends Controller
     {
         try {
 
-            $data = new Pais;
+            $data = new GrupoSanguineo;
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -32,7 +33,7 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando el país',
+                'mensaje' => 'Error creando el grupo sanguineo',
                 'data' => $ex,
             ]);
 
@@ -41,7 +42,7 @@ class PaisController extends Controller
 
     public function find($id)
     {
-        $data = Pais::find($id);
+        $data = GrupoSanguineo::find($id);
 
         return response()->json([
             'data' => $data,
@@ -53,7 +54,7 @@ class PaisController extends Controller
     {
         try {
 
-            $data = Pais::find($id);
+            $data = GrupoSanguineo::find($id);
             $data->nombre = $request->json('nombre');
             $data->save();
 
@@ -63,11 +64,10 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error editando el país',
+                'mensaje' => 'Error editando el grupo sanguineo',
                 'data' => $ex,
             ]);
 
         }
     }
-
 }

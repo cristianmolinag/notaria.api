@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class CrearTablaAntecedente extends Migration
+class CrearTablaPerfil extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CrearTablaAntecedente extends Migration
      */
     public function up()
     {
-        Schema::create('antecedente', function (Blueprint $table) {
+        Schema::create('perfil', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre')->unique();
             $table->timestamps();
@@ -27,6 +27,6 @@ class CrearTablaAntecedente extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('antecedente');
+        Schema::dropIfExists('perfil');
     }
 }

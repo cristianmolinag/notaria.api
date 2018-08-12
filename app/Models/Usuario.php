@@ -10,10 +10,29 @@ class Usuario extends Model
     protected $table = 'usuario';
 
     protected $fillable = [
-        'correo', 'nombres', 'apellidos', 'estado',
+        'correo',
+        'nombres',
+        'apellidos',
+        'estado',
+        'perfil_id',
     ];
 
     protected $hidden = [
         'contrasena', 'remember_token',
     ];
+
+    public function perfil()
+    {
+        return $this->belongsTo(Perfil::class);
+    }
+
+    public function usuario_rol()
+    {
+        return $this->hasMany(UsuarioRol::class)->with('rol');
+    }
+
+    public function firma()
+    {
+        return $this->hasOne(Firma::class);
+    }
 }

@@ -14,8 +14,14 @@ class CrearTablaUsuario extends Migration
             $table->string('nombres', 100);
             $table->string('apellidos', 100);
             $table->string('contrasena');
+
+            $table->unsignedInteger('perfil_id');
+            $table->foreign('perfil_id')->references('id')->on('perfil')->onDelete('cascade');
+
             $table->rememberToken();
             $table->boolean('estado')->default(1);
+
+            $table->unique(['perfil_id', 'id', 'correo']);
             $table->timestamps();
         });
     }

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pais;
+use App\Models\Firma;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class PaisController extends Controller
+class FirmaController extends Controller
 {
     public function index()
     {
 
-        $data = Pais::with('departamento')->get();
+        $data = Firma::All();
 
         return response()->json([
             'data' => $data,
@@ -22,8 +22,9 @@ class PaisController extends Controller
     {
         try {
 
-            $data = new Pais;
-            $data->nombre = $request->json('nombre');
+            $data = new Firma;
+            $data->usuario_id = $request->json('usuario_id');
+            $data->firma = $request->json('firma');
             $data->save();
 
             return response()->json([
@@ -32,7 +33,7 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando el país',
+                'mensaje' => 'Error creando la firma',
                 'data' => $ex,
             ]);
 
@@ -41,7 +42,7 @@ class PaisController extends Controller
 
     public function find($id)
     {
-        $data = Pais::find($id);
+        $data = Firma::find($id);
 
         return response()->json([
             'data' => $data,
@@ -53,8 +54,9 @@ class PaisController extends Controller
     {
         try {
 
-            $data = Pais::find($id);
-            $data->nombre = $request->json('nombre');
+            $data = Firma::find($id);
+            $data->usuario_id = $request->json('usuario_id');
+            $data->firma = $request->json('firma');
             $data->save();
 
             return response()->json([
@@ -63,11 +65,10 @@ class PaisController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error editando el país',
+                'mensaje' => 'Error editando la firma',
                 'data' => $ex,
             ]);
 
         }
     }
-
 }
