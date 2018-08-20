@@ -11,7 +11,10 @@ class CrearTablaPermiso extends Migration
     {
         Schema::create('permiso', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre')->unique();
+            $table->string('titulo');
+            $table->string('componente');
+
+            $table->unique(['titulo', 'componente']);
             $table->timestamps();
         });
     }

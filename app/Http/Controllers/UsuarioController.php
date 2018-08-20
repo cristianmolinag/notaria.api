@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Firma;
 use App\Models\Perfil;
 use App\Models\Usuario;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,7 +17,24 @@ class UsuarioController extends Controller
 
         $perfil = Perfil::where('nombre', 'Funcionario')->first();
 
-        $data = Usuario::where('perfil_id', $perfil->id)->with('perfil', 'firma', 'usuario_rol')->get();
+        $data = Usuario::where('perfil_id', $perfil->id)
+            ->where('id', '>', 1)
+            ->with('perfil', 'firma', 'usuario_rol')
+            ->get();
+
+        return response()->json([
+            'data' => $data,
+        ], 200);
+    }
+
+    public function indexCliente()
+    {
+
+        $perfil = Perfil::where('nombre', 'Cliente')->first();
+
+        $data = Usuario::where('perfil_id', $perfil->id)
+            ->with('perfil', 'usuario_rol')
+            ->get();
 
         return response()->json([
             'data' => $data,
@@ -64,11 +83,7 @@ class UsuarioController extends Controller
     public function registroCliente(Request $request)
     {
         $perfil = Perfil::where('nombre', 'Cliente')->first();
-        if ($request->json('id')) {
-            $usuario = Usuario::find($request->json('id'));
-        } else {
-            $usuario = new Usuario();
-        }
+        $usuario = new Usuario();
 
         try {
             $usuario->correo = $request->json('correo');
@@ -86,22 +101,45 @@ class UsuarioController extends Controller
 
         } catch (QueryException $ex) {
             return response()->json([
-                'mensaje' => 'Error creando el usuario',
+                'mensaje' => 'Error creando el cliente',
                 'data' => $ex,
             ]);
         }
 
     }
 
+    public function updateCliente(Request $request, $id)
+    {
+
+        $usuario = Usuario::find($request->json('id'));
+
+        try {
+            $usuario->correo = $request->json('correo');
+            $usuario->nombres = $request->json('nombres');
+            $usuario->apellidos = $request->json('apellidos');
+            if ($request->json('contrasena')) {
+                $usuario->contrasena = Hash::make($request->json('contrasena'));
+            }
+            $usuario->save();
+
+            return response()->json([
+                'data' => $usuario->with('perfil')->first(),
+            ], 200);
+
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error editando el cliente',
+                'data' => $ex,
+            ]);
+        }
+    }
+
     public function registroFuncionario(Request $request)
     {
         $perfil = Perfil::where('nombre', 'Funcionario')->first();
 
-        if ($request->json('id')) {
-            $usuario = Usuario::find($request->json('id'));
-        } else {
-            $usuario = new Usuario();
-        }
+        $usuario = new Usuario();
+        $firmaF = $request->json('firma');
 
         try {
             $usuario->correo = $request->json('correo');
@@ -113,6 +151,44 @@ class UsuarioController extends Controller
             $usuario->estado = 1;
             $usuario->save();
 
+            $firma = new Firma();
+            $firma->firma = $firmaF['firma'];
+            $firma->usuario_id = $usuario->id;
+            $firma->save();
+
+            return response()->json([
+                'data' => $usuario->with('perfil', 'firma', 'usuario_rol')->first(),
+            ], 200);
+
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error creando el funcionario',
+                'data' => $ex,
+            ]);
+        }
+    }
+
+    public function updateFuncionario(Request $request, $id)
+    {
+
+        $usuario = Usuario::find($request->json('id'));
+        $firmaF = $request->json('firma');
+        $contrasena = $request->json('contrasena');
+
+        try {
+            $usuario->correo = $request->json('correo');
+            $usuario->nombres = $request->json('nombres');
+            $usuario->apellidos = $request->json('apellidos');
+            if ($contrasena) {
+                $usuario->contrasena = Hash::make($request->json('contrasena'));
+            }
+            $usuario->save();
+
+            if ($firmaF['firma']) {
+                $firma = Firma::where('usuario_id', $id)->first();
+                $firma->firma = $firmaF['firma'];
+                $firma->save();
+            }
             return response()->json([
                 'data' => $usuario->with('perfil')->first(),
             ], 200);

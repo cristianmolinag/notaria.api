@@ -5,12 +5,12 @@ Route::group(['prefix' => 'usuario'], function ($router) {
     Route::post('/login/cliente', 'UsuarioController@loginCliente');
 
     Route::post('/registro/cliente', 'UsuarioController@registroCliente');
+    Route::put('/update/cliente/{id}', 'UsuarioController@updateCliente');
 
     Route::post('/login/funcionario', 'UsuarioController@loginFuncionario');
 
     Route::post('/registro/funcionario', 'UsuarioController@registroFuncionario');
-
-    Route::get('/', 'UsuarioController@index');
+    Route::put('/update/funcionario/{id}', 'UsuarioController@updateFuncionario');
 
     Route::get('/funcionario', 'UsuarioController@indexFuncionario');
 
@@ -49,6 +49,10 @@ Route::group(['prefix' => 'perfil'], function ($router) {
 Route::group(['prefix' => 'permiso'], function ($router) {
 
     Route::get('/', 'PermisoController@index');
+
+    Route::get('/porRol/', 'PermisoController@porRol');
+
+    Route::get('/porUsuario/{id}', 'PermisoController@porUsuario');
 
     Route::get('/{id}', 'PermisoController@find');
 

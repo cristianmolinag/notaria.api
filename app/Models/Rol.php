@@ -31,3 +31,22 @@ class UsuarioRol extends Model
         return $this->belongsTo(Usuario::class);
     }
 }
+
+class PermisoRol extends Model
+{
+    protected $table = 'permiso_rol';
+
+    protected $fillable = [
+        'permiso_id', 'rol_id',
+    ];
+
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class);
+    }
+
+    public function Permiso()
+    {
+        return $this->belongsTo(Permiso::class);
+    }
+}

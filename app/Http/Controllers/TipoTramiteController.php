@@ -17,6 +17,15 @@ class TipoTramiteController extends Controller
         ], 200);
     }
 
+    public function find($id)
+    {
+        $data = TipoTramite::find($id);
+
+        return response()->json([
+            'data' => $data,
+        ], 200);
+    }
+
     public function create(Request $request)
     {
         try {
@@ -37,7 +46,6 @@ class TipoTramiteController extends Controller
             ]);
         }
     }
-
     public function update(Request $request, $id)
     {
         try {

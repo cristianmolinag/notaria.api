@@ -15,7 +15,7 @@ class CrearTablaFirma extends Migration
     {
         Schema::create('firma', function (Blueprint $table) {
             $table->increments('id');
-            $table->binary('firma');
+            $table->longText('firma');
 
             $table->unsignedInteger('usuario_id')->unique();
             $table->foreign('usuario_id')->references('id')->on('usuario')->onDelete('cascade');

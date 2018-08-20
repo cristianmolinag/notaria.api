@@ -18,6 +18,16 @@ class RCNacimientoController extends Controller
 
     }
 
+    public function find($id)
+    {
+        $registro = RCNacimiento::where('nuip', '=', $id)
+            ->first();
+
+        return response()->json([
+            'data' => $registro,
+        ], 200);
+    }
+
     public function create(Request $request)
     {
         try {
