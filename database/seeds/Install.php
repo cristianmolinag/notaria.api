@@ -49,22 +49,34 @@ class Install extends Seeder
 
         //Creacion de roles
 
-        $rol = Rol::create(['nombre' => 'Administrador']);
-        Rol::create(['nombre' => 'Secretario']);
-        Rol::create(['nombre' => 'Notario']);
-        Rol::create(['nombre' => 'Cliente']);
+        //Asignacion de rol y permisos Admin
+        $rolA = Rol::create(['nombre' => 'Administrador']);
+        UsuarioRol::create(['usuario_id' => $usuario->id, 'rol_id' => $rolA->id]);
+        $permisosA = Permiso::All();
+        foreach ($permisosA as $permisoA) {
+            PermisoRol::create(['permiso_id' => $permisoA->id, 'rol_id' => $rolA->id]);
+        }
 
-        //Asignacion de rol
-
-        UsuarioRol::create(['usuario_id' => $usuario->id, 'rol_id' => $rol->id]);
-
-        //Asignacion de permiso
-
-        $permisos = Permiso::All();
-
+        //Asignacion de rol y permisos Cliente
+        $rol = Rol::create(['nombre' => 'Cliente']);
+        $permisos = Permiso::whereIn('componente', ['ConsultasPage', 'TramitesPage', 'CitasPage'])->get();
         foreach ($permisos as $permiso) {
             PermisoRol::create(['permiso_id' => $permiso->id, 'rol_id' => $rol->id]);
+        }
 
+        // Asignacion de permisos a Rol Secretario
+        $rol = Rol::create(['nombre' => 'Secretario']);
+        $permisos = Permiso::whereIn('componente', ['ConsultasPage', 'TramitesPage', 'CitasPage', 'RegistroCivilNacimientoPage', 'RegistroCivilMatrimonioPage', 'RegistroCivilDefuncionPage'])->get();
+        foreach ($permisos as $permiso) {
+            PermisoRol::create(['permiso_id' => $permiso->id, 'rol_id' => $rol->id]);
+        }
+
+        // // Asignacion de permisos a Rol Notario
+
+        $rol = Rol::create(['nombre' => 'Notario']);
+        $permisos = Permiso::whereIn('componente', ['ConsultasPage', 'TramitesPage', 'CitasPage', 'RegistroCivilNacimientoPage', 'RegistroCivilMatrimonioPage', 'RegistroCivilDefuncionPage', 'UsuariosPage'])->get();
+        foreach ($permisos as $permiso) {
+            PermisoRol::create(['permiso_id' => $permiso->id, 'rol_id' => $rol->id]);
         }
 
     }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Firma;
 use App\Models\Perfil;
+use App\Models\Rol;
 use App\Models\Usuario;
+use App\Models\UsuarioRol;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -44,13 +46,12 @@ class UsuarioController extends Controller
     public function loginCliente(Request $request)
     {
         $usuario = Usuario::where('correo', $request->json('correo'))->first();
-
-        if ($usuario) {
-            $perfil = Perfil::find($usuario->perfil_id);
-            if ($perfil->nombre == 'Cliente') {
+        if (!!$usuario) {
+            $usuarioRol = UsuarioRol::where('usuario_id', '=', $usuario->id)->with('rol')->first();
+            if ($usuarioRol->rol->nombre == 'Cliente') {
                 if (Hash::check($request->json('contrasena'), $usuario->contrasena)) {
                     return response()->json([
-                        'data' => $usuario->with('perfil')->first(),
+                        'data' => Usuario::where('id', $usuario->id)->with('usuario_rol', 'perfil')->first(),
                     ], 200);
                 }
             }
@@ -65,11 +66,12 @@ class UsuarioController extends Controller
     {
         $usuario = Usuario::where('correo', $request->json('correo'))->first();
         if ($usuario) {
-            $perfil = Perfil::find($usuario->perfil_id);
-            if ($perfil->nombre == 'Funcionario') {
+            $usuarioRol = UsuarioRol::where('usuario_id', '=', $usuario->id)->with('rol')->first();
+            if ($usuarioRol->rol->nombre != 'Cliente') {
                 if (Hash::check($request->json('contrasena'), $usuario->contrasena)) {
+                    // return $usuario;
                     return response()->json([
-                        'data' => $usuario->with('perfil')->first(),
+                        'data' => Usuario::where('id', $usuario->id)->with('usuario_rol', 'perfil')->first(),
                     ], 200);
                 }
             }
@@ -94,6 +96,14 @@ class UsuarioController extends Controller
             $usuario->remember_token = str_random(32);
             $usuario->estado = 1;
             $usuario->save();
+
+            //Asignación del rol
+            $rol = Rol::where('nombre', '=', 'Cliente')->first();
+
+            $usuarioRol = new UsuarioRol();
+            $usuarioRol->usuario_id = $usuario->id;
+            $usuarioRol->rol_id = $rol->id;
+            $usuarioRol->save();
 
             return response()->json([
                 'data' => $usuario->with('perfil')->first(),
@@ -156,6 +166,12 @@ class UsuarioController extends Controller
             $firma->usuario_id = $usuario->id;
             $firma->save();
 
+            //Asignación del rol
+            $usuarioRol = new UsuarioRol();
+            $usuarioRol->usuario_id = $usuario->id;
+            $usuarioRol->rol_id = $request->json('rol_id');
+            $usuarioRol->save();
+
             return response()->json([
                 'data' => $usuario->with('perfil', 'firma', 'usuario_rol')->first(),
             ], 200);
@@ -189,6 +205,12 @@ class UsuarioController extends Controller
                 $firma->firma = $firmaF['firma'];
                 $firma->save();
             }
+
+            //Asignación del rol
+            $usuarioRol = UsuarioRol::where('usuario_id', '=', $usuario->id)->first();
+            $usuarioRol->rol_id = $request->json('rol_id');
+            $usuarioRol->save();
+
             return response()->json([
                 'data' => $usuario->with('perfil')->first(),
             ], 200);
