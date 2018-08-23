@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\EstadoTramite;
 use App\Models\Perfil;
 use App\Models\Permiso;
 use App\Models\PermisoRol;
@@ -78,6 +79,12 @@ class Install extends Seeder
         foreach ($permisos as $permiso) {
             PermisoRol::create(['permiso_id' => $permiso->id, 'rol_id' => $rol->id]);
         }
+
+        // Crear estados de tramite
+
+        EstadoTramite::create(['nombre' => 'Pendiente']);
+        EstadoTramite::create(['nombre' => 'Autorizado']);
+        EstadoTramite::create(['nombre' => 'Rechazado']);
 
     }
 }
