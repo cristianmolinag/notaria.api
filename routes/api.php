@@ -2,12 +2,10 @@
 
 Route::group(['prefix' => 'usuario'], function ($router) {
 
-    Route::post('/login/cliente', 'UsuarioController@loginCliente');
+    Route::post('/login', 'UsuarioController@login');
 
     Route::post('/registro/cliente', 'UsuarioController@registroCliente');
     Route::put('/update/cliente/{id}', 'UsuarioController@updateCliente');
-
-    Route::post('/login/funcionario', 'UsuarioController@loginFuncionario');
 
     Route::post('/registro/funcionario', 'UsuarioController@registroFuncionario');
     Route::put('/update/funcionario/{id}', 'UsuarioController@updateFuncionario');
@@ -215,4 +213,24 @@ Route::group(['prefix' => 'rc_nacimiento'], function ($router) {
     Route::post('/', 'RCNacimientoController@create');
 
     Route::put('/{id}', 'RCNacimientoController@update');
+});
+
+Route::group(['prefix' => 'madre'], function ($router) {
+
+    Route::get('/{id}', 'MadreController@find');
+});
+
+Route::group(['prefix' => 'padre'], function ($router) {
+
+    Route::get('/{id}', 'PadreController@find');
+});
+
+Route::group(['prefix' => 'declarante'], function ($router) {
+
+    Route::get('/{id}', 'DeclaranteController@find');
+});
+
+Route::group(['prefix' => 'testigo'], function ($router) {
+
+    Route::get('/{id}', 'TestigoController@find');
 });

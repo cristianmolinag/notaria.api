@@ -14,7 +14,6 @@ class Install extends Seeder
 
     public function run()
     {
-
         // Creacion de perfiles
 
         $perfilC = new Perfil();

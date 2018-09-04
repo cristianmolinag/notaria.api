@@ -15,10 +15,8 @@ class Usuario extends Model
         'apellidos',
         'estado',
         'perfil_id',
-    ];
-
-    protected $hidden = [
-        'contrasena', 'remember_token',
+        'contrasena',
+        'remember_token',
     ];
 
     public function perfil()

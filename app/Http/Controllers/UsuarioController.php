@@ -43,40 +43,16 @@ class UsuarioController extends Controller
         ], 200);
     }
 
-    public function loginCliente(Request $request)
+    public function login(Request $request)
     {
         $usuario = Usuario::where('correo', $request->json('correo'))->first();
         if (!!$usuario) {
-            $usuarioRol = UsuarioRol::where('usuario_id', '=', $usuario->id)->with('rol')->first();
-            if ($usuarioRol->rol->nombre == 'Cliente') {
-                if (Hash::check($request->json('contrasena'), $usuario->contrasena)) {
-                    return response()->json([
-                        'data' => Usuario::where('id', $usuario->id)->with('usuario_rol', 'perfil')->first(),
-                    ], 200);
-                }
+            if (Hash::check($request->json('contrasena'), $usuario->contrasena)) {
+                return response()->json([
+                    'data' => Usuario::where('id', $usuario->id)->with('usuario_rol', 'perfil')->first(),
+                ], 200);
             }
         }
-
-        return response()->json([
-            'mensaje' => 'Usuario incorrecto',
-        ]);
-    }
-
-    public function loginFuncionario(Request $request)
-    {
-        $usuario = Usuario::where('correo', $request->json('correo'))->first();
-        if ($usuario) {
-            $usuarioRol = UsuarioRol::where('usuario_id', '=', $usuario->id)->with('rol')->first();
-            if ($usuarioRol->rol->nombre != 'Cliente') {
-                if (Hash::check($request->json('contrasena'), $usuario->contrasena)) {
-                    // return $usuario;
-                    return response()->json([
-                        'data' => Usuario::where('id', $usuario->id)->with('usuario_rol', 'perfil')->first(),
-                    ], 200);
-                }
-            }
-        }
-
         return response()->json([
             'mensaje' => 'Usuario incorrecto',
         ]);

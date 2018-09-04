@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Declarante;
+use App\Models\Inscrito;
+use App\Models\Madre;
+use App\Models\Padre;
 use App\Models\RCNacimiento;
+use App\Models\Testigo;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RCNacimientoController extends Controller
 {
@@ -31,45 +37,132 @@ class RCNacimientoController extends Controller
     public function create(Request $request)
     {
         try {
-            $registro = new RCNacimiento();
 
-            $registro->nuip = $request->json('nuip');
-            $registro->indicativo_serial = $request->json('indicativo_serial');
-            $registro->primer_apellido = $request->json('primer_apellido');
-            $registro->segundo_apellido = $request->json('segundo_apellido');
-            $registro->nombres = $request->json('nombres');
-            $registro->fecha_nacimiento = $request->json('fecha_nacimiento');
-            $registro->genero_id = $request->json('genero_id');
-            $registro->grupo_sanguineo_id = $request->json('grupo_sanguineo_id');
-            $registro->factor_rh_id = $request->json('factor_rh_id');
-            $registro->lugar_nacimiento = $request->json('lugar_nacimiento', "la veredita");
-            $registro->antecedente_id = $request->json('antecedente_id');
-            $registro->num_nacido_vivo = $request->json('num_nacido_vivo');
-            $registro->nombres_madre = $request->json('nombres_madre');
-            $registro->tipo_documento_madre_id = $request->json('tipo_documento_madre_id');
-            $registro->documento_madre = $request->json('documento_madre');
-            $registro->pais_madre_id = $request->json('pais_madre_id');
-            $registro->nombres_padre = $request->json('nombres_padre', null);
-            $registro->tipo_documento_padre_id = $request->json('tipo_documento_padre_id', null);
-            $registro->documento_padre = $request->json('documento_padre', null);
-            $registro->pais_padre_id = $request->json('pais_padre_id', null);
-            $registro->nombres_declarante = $request->json('nombres_declarante');
-            $registro->tipo_documento_declarante_id = $request->json('tipo_documento_declarante_id');
-            $registro->documento_declarante = $request->json('documento_declarante');
-            $registro->firma_declarante = $request->json('firma_declarante');
-            $registro->nombres_testigo_uno = $request->json('nombres_testigo_uno', null);
-            $registro->tipo_documento_testigo_uno_id = $request->json('tipo_documento_testigo_uno_id', null);
-            $registro->documento_testigo_uno = $request->json('nomdocumento_testigo_unobre', null);
-            $registro->firma_testigo_uno = $request->json('firma_testigo_uno', null);
-            $registro->nombres_testigo_dos = $request->json('nombres_testigo_dos', null);
-            $registro->tipo_documento_testigo_dos_id = $request->json('tipo_documento_testigo_dos_id', null);
-            $registro->documento_testigo_dos = $request->json('documento_testigo_dos', null);
-            $registro->firma_testigo_dos = $request->json('firma_testigo_dos', null);
-            $registro->notas_marginales = $request->json('notas_marginales', null);
-            $registro->save();
+            $data = new RCNacimiento();
+            DB::transaction(function () use ($request, $data) {
+
+                //Insertar inscrito
+                $inscrito = new Inscrito();
+                $inscrito->primer_apellido = $request->json('inscrito_primer_apellido');
+                $inscrito->segundo_apellido = $request->json('inscrito_segundo_apellido');
+                $inscrito->nombres = $request->json('inscrito_nombres');
+                $inscrito->fecha_nacimiento = $request->json('inscrito_fecha_nacimiento');
+                $inscrito->genero_id = $request->json('inscrito_genero_id');
+                $inscrito->grupo_sanguineo_id = $request->json('inscrito_grupo_sanguineo_id');
+                $inscrito->factor_rh_id = $request->json('inscrito_factor_rh_id');
+                $inscrito->lugar_nacimiento = $request->json('inscrito_lugar_nacimiento');
+                $inscrito->tipo_inscrito = "rc_nacimiento";
+                $inscrito->save();
+
+                //Insertar madre
+                if ($request->json('madre_id')) {
+                    $madre = Madre::find($request->json('madre_id'));
+                    $madre->nombres = $request->json('madre_nombres');
+                    $madre->tipo_documento_id = $request->json('madre_tipo_documento_id');
+                    $madre->documento = $request->json('madre_documento');
+                    $madre->pais_id = $request->json('madre_pais_id');
+                    $madre->save();
+
+                } else {
+                    $madre = new Madre();
+                    $madre->nombres = $request->json('madre_nombres');
+                    $madre->tipo_documento_id = $request->json('madre_tipo_documento_id');
+                    $madre->documento = $request->json('madre_documento');
+                    $madre->pais_id = $request->json('madre_pais_id');
+                    $madre->save();
+                }
+
+                //Insertar padre
+                if ($request->json('padre_id')) {
+                    $padre = Padre::find($request->json('padre_id'));
+                    $padre->nombres = $request->json('padre_nombres');
+                    $padre->tipo_documento_id = $request->json('padre_tipo_documento_id');
+                    $padre->documento = $request->json('padre_documento');
+                    $padre->pais_id = $request->json('padre_pais_id');
+                    $padre->save();
+                } else {
+                    $padre = new Padre();
+                    if ($request->json('padre_documento')) {
+                        $padre->nombres = $request->json('padre_nombres');
+                        $padre->tipo_documento_id = $request->json('padre_tipo_documento_id');
+                        $padre->documento = $request->json('padre_documento');
+                        $padre->pais_id = $request->json('padre_pais_id');
+                        $padre->save();
+                    }
+                }
+
+                //Insertar delcarante
+                if ($request->json('declarante_id')) {
+                    $declarante = Declarante::find($request->json('declarante_id'));
+                    $declarante->nombres = $request->json('declarante_nombres');
+                    $declarante->tipo_documento_id = $request->json('declarante_tipo_documento_id');
+                    $declarante->documento = $request->json('declarante_documento');
+                    $declarante->firma_declarante = $request->json('declarante_firma');
+                    $declarante->save();
+                } else {
+                    $declarante = new Declarante();
+                    $declarante->nombres = $request->json('declarante_nombres');
+                    $declarante->tipo_documento_id = $request->json('declarante_tipo_documento_id');
+                    $declarante->documento = $request->json('declarante_documento');
+                    $declarante->firma_declarante = $request->json('declarante_firma');
+                    $declarante->save();
+                }
+
+                //Insertar testigo 1
+                if ($request->json('testigo_uno_id')) {
+                    $testigoUno = Testigo::find($request->json('testigo_uno_id'));
+                    $testigoUno->nombres = $request->json('testigo_uno_nombres');
+                    $testigoUno->tipo_documento_id = $request->json('testigo_uno_tipo_documento_id');
+                    $testigoUno->documento = $request->json('testigo_uno_documento');
+                    $testigoUno->firma_testigo = $request->json('firma_testigo_uno');
+                    $testigoUno->save();
+
+                } else {
+                    $testigoUno = new Testigo();
+                    if ($request->json('testigo_uno_documento')) {
+                        $testigoUno->nombres = $request->json('testigo_uno_nombres');
+                        $testigoUno->tipo_documento_id = $request->json('testigo_uno_tipo_documento_id');
+                        $testigoUno->documento = $request->json('testigo_uno_documento');
+                        $testigoUno->firma_testigo = $request->json('firma_testigo_uno');
+                        $testigoUno->save();
+                    }
+                }
+
+                //Insertar testigo 2
+                if ($request->json('testigo_dos_id')) {
+                    $testigoDos = Testigo::find($request->json('testigo_dos_id'));
+                    $testigoDos->nombres = $request->json('testigo_dos_nombres');
+                    $testigoDos->tipo_documento_id = $request->json('testigo_dos_tipo_documento_id');
+                    $testigoDos->documento = $request->json('testigo_dos_documento');
+                    $testigoDos->firma_testigo = $request->json('firma_testigo_dos');
+                    $testigoDos->save();
+                } else {
+                    $testigoDos = new Testigo();
+                    if ($request->json('testigo_dos_documento')) {
+                        $testigoDos->nombres = $request->json('testigo_dos_nombres');
+                        $testigoDos->tipo_documento_id = $request->json('testigo_dos_tipo_documento_id');
+                        $testigoDos->documento = $request->json('testigo_dos_documento');
+                        $testigoDos->firma_testigo = $request->json('firma_testigo_dos');
+                        $testigoDos->save();
+                    }
+                }
+
+                //Insertar registro civil de nacimiento
+                $data->inscrito_id = $inscrito->nuip;
+                $data->antecedente_id = $request->json('antecedente_id');
+                $data->num_nacido_vivo = $request->json('num_nacido_vivo');
+                $data->madre_id = $madre->id;
+                $data->padre_id = ($padre->id) ? $padre->id : null;
+                $data->declarante_id = $declarante->id;
+                $data->testigo_uno_id = ($testigoUno->id) ? $testigoUno->id : null;
+                $data->testigo_dos_id = ($testigoDos) ? $testigoDos->id : null;
+                $data->notas_marginales = $request->json('notas_marginales');
+                $data->save();
+
+            });
 
             return response()->json([
-                'data' => $registro,
+                'data' => $data,
             ], 200);
 
         } catch (QueryException $ex) {

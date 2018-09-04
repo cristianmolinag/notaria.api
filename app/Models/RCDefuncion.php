@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RCNacimiento extends Model
+class RCDefuncion extends Model
 {
-    protected $table = 'rc_nacimiento';
+    protected $table = 'rc_defuncion';
     protected $primaryKey = 'indicativo_serial';
-
 }
