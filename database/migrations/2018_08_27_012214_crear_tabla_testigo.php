@@ -20,7 +20,7 @@ class CrearTablaTestigo extends Migration
             $table->unsignedInteger('tipo_documento_id');
             $table->foreign('tipo_documento_id')->references('id')->on('tipo_documento')->onDelete('cascade');
 
-            $table->bigInteger('documento_')->unique();
+            $table->bigInteger('documento')->unique();
             $table->longText('firma_testigo');
 
             $table->timestamps();
