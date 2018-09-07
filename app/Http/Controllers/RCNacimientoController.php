@@ -16,7 +16,9 @@ class RCNacimientoController extends Controller
 {
     public function index()
     {
-        $data = RCNacimiento::All();
+        $data = RCNacimiento::
+            with('inscrito', 'madre', 'padre', 'declarante', 'testigoUno', 'testigoDos', 'antecedente', 'firma')
+            ->get();
 
         return response()->json([
             'data' => $data,
@@ -26,7 +28,8 @@ class RCNacimientoController extends Controller
 
     public function find($id)
     {
-        $registro = RCNacimiento::where('nuip', '=', $id)
+        $registro = RCNacimiento::where('indicativo_serial', '=', $id)
+            ->with('inscrito', 'madre', 'padre', 'declarante', 'testigoUno', 'testigoDos', 'antecedente', 'firma')
             ->first();
 
         return response()->json([
@@ -50,7 +53,7 @@ class RCNacimientoController extends Controller
                 $inscrito->genero_id = $request->json('inscrito_genero_id');
                 $inscrito->grupo_sanguineo_id = $request->json('inscrito_grupo_sanguineo_id');
                 $inscrito->factor_rh_id = $request->json('inscrito_factor_rh_id');
-                $inscrito->lugar_nacimiento = $request->json('inscrito_lugar_nacimiento');
+                $inscrito->lugar_nacimiento = $request->json('lugar_nacimiento');
                 $inscrito->tipo_inscrito = "rc_nacimiento";
                 $inscrito->save();
 
@@ -91,7 +94,7 @@ class RCNacimientoController extends Controller
                     }
                 }
 
-                //Insertar delcarante
+                //Insertar declarante
                 if ($request->json('declarante_id')) {
                     $declarante = Declarante::find($request->json('declarante_id'));
                     $declarante->nombres = $request->json('declarante_nombres');
@@ -114,7 +117,7 @@ class RCNacimientoController extends Controller
                     $testigoUno->nombres = $request->json('testigo_uno_nombres');
                     $testigoUno->tipo_documento_id = $request->json('testigo_uno_tipo_documento_id');
                     $testigoUno->documento = $request->json('testigo_uno_documento');
-                    $testigoUno->firma_testigo = $request->json('firma_testigo_uno');
+                    $testigoUno->firma_testigo = $request->json('testigo_uno_firma');
                     $testigoUno->save();
 
                 } else {
@@ -123,7 +126,7 @@ class RCNacimientoController extends Controller
                         $testigoUno->nombres = $request->json('testigo_uno_nombres');
                         $testigoUno->tipo_documento_id = $request->json('testigo_uno_tipo_documento_id');
                         $testigoUno->documento = $request->json('testigo_uno_documento');
-                        $testigoUno->firma_testigo = $request->json('firma_testigo_uno');
+                        $testigoUno->firma_testigo = $request->json('testigo_uno_firma');
                         $testigoUno->save();
                     }
                 }
@@ -134,7 +137,7 @@ class RCNacimientoController extends Controller
                     $testigoDos->nombres = $request->json('testigo_dos_nombres');
                     $testigoDos->tipo_documento_id = $request->json('testigo_dos_tipo_documento_id');
                     $testigoDos->documento = $request->json('testigo_dos_documento');
-                    $testigoDos->firma_testigo = $request->json('firma_testigo_dos');
+                    $testigoDos->firma_testigo = $request->json('testigo_dos_firma');
                     $testigoDos->save();
                 } else {
                     $testigoDos = new Testigo();
@@ -142,7 +145,7 @@ class RCNacimientoController extends Controller
                         $testigoDos->nombres = $request->json('testigo_dos_nombres');
                         $testigoDos->tipo_documento_id = $request->json('testigo_dos_tipo_documento_id');
                         $testigoDos->documento = $request->json('testigo_dos_documento');
-                        $testigoDos->firma_testigo = $request->json('firma_testigo_dos');
+                        $testigoDos->firma_testigo = $request->json('testigo_dos_firma');
                         $testigoDos->save();
                     }
                 }
@@ -162,7 +165,9 @@ class RCNacimientoController extends Controller
             });
 
             return response()->json([
-                'data' => $data,
+                'data' => RCNacimiento::find($data->indicativo_serial)
+                    ->with('inscrito', 'madre', 'padre', 'declarante', 'testigoUno', 'testigoDos', 'antecedente', 'firma')
+                    ->first(),
             ], 200);
 
         } catch (QueryException $ex) {
@@ -170,9 +175,6 @@ class RCNacimientoController extends Controller
                 'mensaje' => 'Error creando el registro civil',
                 'data' => $ex,
             ]);
-
         }
-
     }
-
 }
