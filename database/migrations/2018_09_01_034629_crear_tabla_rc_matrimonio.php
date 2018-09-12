@@ -17,6 +17,7 @@ class CrearTablaRcMatrimonio extends Migration
             $table->increments('indicativo_serial');
 
             $table->string('lugar_celebracion');
+            $table->date('fecha_celebracion');
             $table->enum('tipo_matrimonio', ['civil', 'religioso']);
             $table->enum('tipo_documento', ['escritura de protocolización', 'partida eclesiástica', 'acta de matrimonio']);
 
@@ -29,11 +30,13 @@ class CrearTablaRcMatrimonio extends Migration
             $table->unsignedInteger('denunciante_id');
             $table->foreign('denunciante_id')->references('id')->on('denunciante')->onDelete('cascade');
 
-            $table->date('fecha_inscripcion');
+            $table->unsignedInteger('capitulacion_id')->nullable(true);
+            $table->foreign('capitulacion_id')->references('id')->on('capitulacion')->onDelete('cascade');
 
             $table->unsignedInteger('firma_id')->nullable(true);
             $table->foreign('firma_id')->references('id')->on('firma')->onDelete('cascade');
 
+            $table->longText('notas_marginales')->nullable(true);
             $table->timestamps();
         });
 

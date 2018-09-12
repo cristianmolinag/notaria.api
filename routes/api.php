@@ -234,3 +234,24 @@ Route::group(['prefix' => 'testigo'], function ($router) {
 
     Route::get('/{id}', 'TestigoController@find');
 });
+
+Route::group(['prefix' => 'contrayente'], function ($router) {
+
+    Route::get('/{id}', 'ContrayenteController@find');
+});
+
+Route::group(['prefix' => 'denunciante'], function ($router) {
+
+    Route::get('/{id}', 'DenuncianteController@find');
+});
+
+Route::group(['prefix' => 'rc_matrimonio'], function ($router) {
+
+    Route::get('/', 'RCMatrimonioController@index');
+
+    Route::get('/{id}', 'RCMatrimonioController@find');
+
+    Route::post('/', 'RCMatrimonioController@create');
+
+    Route::put('/{id}', 'RCMatrimonioController@update');
+});

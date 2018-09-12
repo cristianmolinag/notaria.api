@@ -42,7 +42,7 @@ class CrearTablaRcNacimiento extends Migration
             $table->unsignedInteger('firma_id')->nullable(true);
             $table->foreign('firma_id')->references('id')->on('firma')->onDelete('cascade');
 
-            $table->string('notas_marginales')->nullable(true);
+            $table->longText('notas_marginales')->nullable(true);
 
             $table->timestamps();
         });

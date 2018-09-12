@@ -19,6 +19,9 @@ class CrearTablaHijo extends Migration
             $table->bigInteger('documento')->unique();
             $table->string('indicativo_serial')->unique();
 
+            $table->unsignedInteger('tipo_documento_id');
+            $table->foreign('tipo_documento_id')->references('id')->on('tipo_documento')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

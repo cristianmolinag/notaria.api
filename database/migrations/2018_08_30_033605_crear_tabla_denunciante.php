@@ -23,7 +23,7 @@ class CrearTablaDenunciante extends Migration
 
             $table->bigInteger('documento')->unique();
 
-            $table->longText('firma_declarante');
+            $table->longText('firma_denunciante');
 
             $table->timestamps();
         });
