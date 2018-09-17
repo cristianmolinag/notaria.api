@@ -7,6 +7,8 @@ use App\Models\Contrayente;
 use App\Models\Denunciante;
 use App\Models\Hijo;
 use App\Models\HijoRCMatrimonio;
+use App\Models\Providencia;
+use App\Models\ProvidenciaRCMatrimonio;
 use App\Models\RCMatrimonio;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -129,7 +131,7 @@ class RCMatrimonioController extends Controller
                     $hijoUno->save();
 
                     $hijo_matrimonioUno = new HijoRCMatrimonio();
-                    $hijo_matrimonioUno->rc_matrimonio_id = $data->id;
+                    $hijo_matrimonioUno->rc_matrimonio_id = $data->indicativo_serial;
                     $hijo_matrimonioUno->hijo_id = $hijoUno->id;
                     $hijo_matrimonioUno->save();
                 }
@@ -143,11 +145,25 @@ class RCMatrimonioController extends Controller
                     $hijoDos->save();
 
                     $hijo_matrimonioDos = new HijoRCMatrimonio();
-                    $hijo_matrimonioDos->rc_matrimonio_id = $data->id;
+                    $hijo_matrimonioDos->rc_matrimonio_id = $data->indicativo_serial;
                     $hijo_matrimonioDos->hijo_id = $hijoDos->id;
                     $hijo_matrimonioDos->save();
                 }
 
+                $providencia = new Providencia();
+                if ($request->json('providencia_num_notaria')) {
+                    $providencia->tipo_providencia = $request->json('providencia_tipo');
+                    $providencia->num_escritura = $request->json('providencia_num_escritura');
+                    $providencia->num_notaria = $request->json('providencia_num_notaria');
+                    $providencia->fecha_providencia = $request->json('providencia_fecha');
+                    $providencia->firma_providencia = $request->json('providencia_firma');
+                    $providencia->save();
+
+                    $providenciaRCMatrimonio = new ProvidenciaRCMatrimonio();
+                    $providenciaRCMatrimonio->providencia_id = $providencia->id;
+                    $providenciaRCMatrimonio->rc_matrimonio_id = $data->indicativo_serial;
+                    $providenciaRCMatrimonio->save();
+                }
             });
 
             return response()->json([

@@ -20,8 +20,7 @@ class CrearTablaRcDefuncion extends Migration
             $table->time('hora_defuncion');
             $table->string('certificado_defuncion')->unique();
 
-            $table->unsignedInteger('juzgado_id');
-            $table->foreign('juzgado_id')->references('id')->on('juzgado')->onDelete('cascade');
+            $table->string('juzgado');
 
             $table->date('fecha_sentencia');
             $table->enum('tipo_certificado', ['judicial', 'medico']);
@@ -36,11 +35,10 @@ class CrearTablaRcDefuncion extends Migration
             $table->unsignedInteger('testigo_dos_id')->nullable(true);
             $table->foreign('testigo_dos_id')->references('id')->on('testigo')->onDelete('cascade');
 
-            $table->date('fecha_inscripcion');
-
             $table->unsignedInteger('firma_id')->nullable(true);
             $table->foreign('firma_id')->references('id')->on('firma')->onDelete('cascade');
 
+            $table->longText('notas_marginales')->nullable(true);
             $table->timestamps();
         });
         DB::statement("ALTER TABLE rc_defuncion AUTO_INCREMENT = 20000000;");

@@ -4,23 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hijo extends Model
+class InscritoDefuncion extends Model
 {
-    protected $table = 'hijo';
+    protected $table = 'inscrito_defuncion';
 
     protected $fillable = [
         'nombres',
         'tipo_documento_id',
         'documento',
-        'pais_id',
+        'genero_id',
+        'firma',
     ];
 
     public function tipoDocumento()
     {
         return $this->belongsTo(TipoDocumento::class);
     }
-    public function pais()
+
+    public function genero()
     {
-        return $this->belongsTo(Pais::class);
+        return $this->belongsTo(Genero::class);
     }
 }

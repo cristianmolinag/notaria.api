@@ -19,9 +19,7 @@ class CrearTablaProvidencia extends Migration
             $table->integer('num_escritura');
             $table->integer('num_notaria');
             $table->date('fecha_providencia');
-
-            $table->unsignedInteger('firma_id')->nullable(true);
-            $table->foreign('firma_id')->references('id')->on('firma')->onDelete('cascade');
+            $table->longText('firma_providencia');
 
             $table->timestamps();
         });

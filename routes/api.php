@@ -255,3 +255,29 @@ Route::group(['prefix' => 'rc_matrimonio'], function ($router) {
 
     Route::put('/{id}', 'RCMatrimonioController@update');
 });
+
+Route::group(['prefix' => 'capitulacion'], function ($router) {
+
+    Route::get('/{id}', 'CapitulacionController@find');
+});
+
+Route::group(['prefix' => 'hijo'], function ($router) {
+
+    Route::get('/{id}', 'HijoController@find');
+});
+
+Route::group(['prefix' => 'providencia'], function ($router) {
+
+    Route::get('/{id}', 'ProvidenciaController@find');
+});
+
+Route::group(['prefix' => 'rc_defuncion'], function ($router) {
+
+    Route::get('/', 'RCDefuncionController@index');
+
+    Route::get('/{id}', 'RCDefuncionController@find');
+
+    Route::post('/', 'RCDefuncionController@create');
+
+    Route::put('/{id}', 'RCDefuncionController@update');
+});

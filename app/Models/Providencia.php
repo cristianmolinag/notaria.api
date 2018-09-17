@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hijo extends Model
+class Providencia extends Model
 {
-    protected $table = 'hijo';
+    protected $table = 'providencia';
 
     protected $fillable = [
-        'nombres',
-        'tipo_documento_id',
-        'documento',
-        'pais_id',
+        'tipo_provicencia',
+        'num_escritura',
+        'num_notaria',
+        'fecha_providencia',
+        'firma_id',
     ];
 
     public function tipoDocumento()
