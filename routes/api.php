@@ -3,6 +3,7 @@
 Route::group(['prefix' => 'usuario'], function ($router) {
 
     Route::post('/login', 'UsuarioController@login');
+    Route::put('/{id}', 'UsuarioController@update');
 
     Route::post('/registro/cliente', 'UsuarioController@registroCliente');
     Route::put('/update/cliente/{id}', 'UsuarioController@updateCliente');
@@ -280,4 +281,15 @@ Route::group(['prefix' => 'rc_defuncion'], function ($router) {
     Route::post('/', 'RCDefuncionController@create');
 
     Route::put('/{id}', 'RCDefuncionController@update');
+});
+
+Route::group(['prefix' => 'tramite'], function ($router) {
+
+    Route::get('/', 'TramiteController@index');
+
+    Route::get('/{id}', 'TramiteController@find');
+
+    Route::post('/', 'TramiteController@create');
+
+    Route::put('/{id}', 'TramiteController@update');
 });

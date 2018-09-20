@@ -59,14 +59,14 @@ class Install extends Seeder
 
         //Asignacion de rol y permisos Cliente
         $rol = Rol::create(['nombre' => 'Cliente']);
-        $permisos = Permiso::whereIn('componente', ['ConsultasPage', 'TramitesPage', 'CitasPage'])->get();
+        $permisos = Permiso::whereIn('componente', ['ConsultasPage', 'TramitesPage', 'CitasPage', 'UsuariosPage'])->get();
         foreach ($permisos as $permiso) {
             PermisoRol::create(['permiso_id' => $permiso->id, 'rol_id' => $rol->id]);
         }
 
         // Asignacion de permisos a Rol Secretario
         $rol = Rol::create(['nombre' => 'Secretario']);
-        $permisos = Permiso::whereIn('componente', ['ConsultasPage', 'TramitesPage', 'CitasPage', 'RegistroCivilNacimientoPage', 'RegistroCivilMatrimonioPage', 'RegistroCivilDefuncionPage'])->get();
+        $permisos = Permiso::whereIn('componente', ['ConsultasPage', 'TramitesPage', 'CitasPage', 'RegistroCivilNacimientoPage', 'RegistroCivilMatrimonioPage', 'RegistroCivilDefuncionPage', 'UsuariosPage'])->get();
         foreach ($permisos as $permiso) {
             PermisoRol::create(['permiso_id' => $permiso->id, 'rol_id' => $rol->id]);
         }

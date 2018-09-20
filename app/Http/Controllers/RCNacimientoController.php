@@ -165,7 +165,7 @@ class RCNacimientoController extends Controller
             });
 
             return response()->json([
-                'data' => RCNacimiento::find($data->indicativo_serial)
+                'data' => RCNacimiento::where('indicativo_serial', $data->indicativo_serial)
                     ->with('inscrito', 'madre', 'padre', 'declarante', 'testigoUno', 'testigoDos', 'antecedente', 'firma')
                     ->first(),
             ], 200);

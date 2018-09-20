@@ -30,7 +30,6 @@ class CrearTablaInscrito extends Migration
             $table->foreign('factor_rh_id')->references('id')->on('factor_rh')->onDelete('cascade');
 
             $table->string('lugar_nacimiento')->nullable(true);
-            $table->enum('tipo_inscrito', ['rc_nacimiento', 'rc_matrimonio', 'rc_defuncion']);
             $table->timestamps();
         });
 

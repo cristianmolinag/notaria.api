@@ -13,7 +13,7 @@ class CrearTablaRcDefuncion extends Migration
             $table->increments('indicativo_serial');
 
             $table->unsignedInteger('inscrito_id');
-            $table->foreign('inscrito_id')->references('nuip')->on('inscrito')->onDelete('cascade');
+            $table->foreign('inscrito_id')->references('id')->on('inscrito_defuncion')->onDelete('cascade');
 
             $table->string('lugar_defuncion');
             $table->date('fecha_defuncion');

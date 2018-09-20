@@ -199,4 +199,30 @@ class UsuarioController extends Controller
         }
 
     }
+
+    public function update(Request $request, $id)
+    {
+
+        $usuario = Usuario::with('usuario_rol', 'perfil')->find($id);
+
+        try {
+            $usuario->correo = $request->json('correo');
+            $usuario->nombres = $request->json('nombres');
+            $usuario->apellidos = $request->json('apellidos');
+            if ($request->json('contrasena')) {
+                $usuario->contrasena = Hash::make($request->json('contrasena'));
+            }
+            $usuario->save();
+
+            return response()->json([
+                'data' => $usuario,
+            ], 200);
+
+        } catch (QueryException $ex) {
+            return response()->json([
+                'mensaje' => 'Error editando el cliente',
+                'data' => $ex,
+            ]);
+        }
+    }
 }

@@ -21,7 +21,7 @@ class RCDefuncion extends Model
 
     public function inscritoDefuncion()
     {
-        return $this->belongsTo(InscritoDefuncion::class, 'contrayente_uno_id')->with('tipoDocumento');
+        return $this->belongsTo(InscritoDefuncion::class, 'inscrito_id')->with('tipoDocumento', 'genero');
     }
 
     public function testigoUno()

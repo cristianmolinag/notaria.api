@@ -125,7 +125,7 @@ class RCDefuncionController extends Controller
             });
 
             return response()->json([
-                'data' => RCDefuncion::find($data->indicativo_serial)
+                'data' => RCDefuncion::where('indicativo_serial', $data->indicativo_serial)
                     ->with('inscritoDefuncion', 'denunciante', 'testigoUno', 'testigoDos', 'firma')
                     ->first(),
             ], 200);

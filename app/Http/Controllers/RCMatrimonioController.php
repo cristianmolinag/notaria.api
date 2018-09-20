@@ -167,7 +167,7 @@ class RCMatrimonioController extends Controller
             });
 
             return response()->json([
-                'data' => RCMatrimonio::find($data->indicativo_serial)
+                'data' => RCMatrimonio::where('indicativo_serial', $data->indicativo_serial)
                     ->with('firma', 'denunciante', 'contrayenteUno', 'contrayenteDos')
                     ->first(),
             ], 200);
