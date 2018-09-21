@@ -5,6 +5,7 @@ use App\Models\Perfil;
 use App\Models\Permiso;
 use App\Models\PermisoRol;
 use App\Models\Rol;
+use App\Models\TipoTramite;
 use App\Models\Usuario;
 use App\Models\UsuarioRol;
 use Illuminate\Database\Seeder;
@@ -59,7 +60,7 @@ class Install extends Seeder
 
         //Asignacion de rol y permisos Cliente
         $rol = Rol::create(['nombre' => 'Cliente']);
-        $permisos = Permiso::whereIn('componente', ['ConsultasPage', 'TramitesPage', 'CitasPage', 'UsuariosPage'])->get();
+        $permisos = Permiso::whereIn('componente', ['TramitesPage', 'CitasPage', 'UsuariosPage'])->get();
         foreach ($permisos as $permiso) {
             PermisoRol::create(['permiso_id' => $permiso->id, 'rol_id' => $rol->id]);
         }
@@ -84,6 +85,9 @@ class Install extends Seeder
         EstadoTramite::create(['nombre' => 'Pendiente']);
         EstadoTramite::create(['nombre' => 'Autorizado']);
         EstadoTramite::create(['nombre' => 'Rechazado']);
+
+        // Crear tipos de tramite
+        TipoTramite::create(['nombre' => 'Duplicado', 'valor' => 3000]);
 
     }
 }

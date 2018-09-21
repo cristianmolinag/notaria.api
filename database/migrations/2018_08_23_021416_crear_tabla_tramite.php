@@ -19,6 +19,8 @@ class CrearTablaTramite extends Migration
             $table->unsignedInteger('tipo_tramite_id');
             $table->foreign('tipo_tramite_id')->references('id')->on('tipo_tramite')->onDelete('cascade');
 
+            $table->bigInteger('indicativo_serial');
+
             $table->unsignedInteger('cliente_id');
             $table->foreign('cliente_id')->references('id')->on('usuario')->onDelete('cascade');
 

@@ -13,5 +13,15 @@ class Tramite extends Model
         'cliente_id',
         'estado_tramite_id',
         'funcionario_id',
+        'indicativo_serial',
     ];
+
+    public function tipoTramite()
+    {
+        return $this->belongsTo(TipoTramite::class);
+    }
+    public function estadoTramite()
+    {
+        return $this->belongsTo(EstadoTramite::class);
+    }
 }

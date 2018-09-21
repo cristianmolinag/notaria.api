@@ -209,6 +209,8 @@ Route::group(['prefix' => 'rc_nacimiento'], function ($router) {
 
     Route::get('/', 'RCNacimientoController@index');
 
+    Route::get('/cliente/{id}', 'RCNacimientoController@cliente');
+
     Route::get('/{id}', 'RCNacimientoController@find');
 
     Route::post('/', 'RCNacimientoController@create');
@@ -250,6 +252,8 @@ Route::group(['prefix' => 'rc_matrimonio'], function ($router) {
 
     Route::get('/', 'RCMatrimonioController@index');
 
+    Route::get('/cliente/{id}', 'RCMatrimonioController@cliente');
+
     Route::get('/{id}', 'RCMatrimonioController@find');
 
     Route::post('/', 'RCMatrimonioController@create');
@@ -276,6 +280,8 @@ Route::group(['prefix' => 'rc_defuncion'], function ($router) {
 
     Route::get('/', 'RCDefuncionController@index');
 
+    Route::get('/cliente/{id}', 'RCDefuncionController@cliente');
+
     Route::get('/{id}', 'RCDefuncionController@find');
 
     Route::post('/', 'RCDefuncionController@create');
@@ -286,6 +292,8 @@ Route::group(['prefix' => 'rc_defuncion'], function ($router) {
 Route::group(['prefix' => 'tramite'], function ($router) {
 
     Route::get('/', 'TramiteController@index');
+
+    Route::get('/buscar/{id}', 'TramiteController@buscar');
 
     Route::get('/{id}', 'TramiteController@find');
 
