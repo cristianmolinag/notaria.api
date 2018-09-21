@@ -301,3 +301,14 @@ Route::group(['prefix' => 'tramite'], function ($router) {
 
     Route::put('/{id}', 'TramiteController@update');
 });
+
+Route::group(['prefix' => 'cita'], function ($router) {
+
+    Route::get('/', 'CitaController@index');
+
+    Route::get('/{id}', 'CitaController@find');
+
+    Route::post('/', 'CitaController@create');
+
+    Route::put('/{id}', 'CitaController@update');
+});
