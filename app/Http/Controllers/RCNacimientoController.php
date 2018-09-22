@@ -54,7 +54,6 @@ class RCNacimientoController extends Controller
                 $inscrito->grupo_sanguineo_id = $request->json('inscrito_grupo_sanguineo_id');
                 $inscrito->factor_rh_id = $request->json('inscrito_factor_rh_id');
                 $inscrito->lugar_nacimiento = $request->json('lugar_nacimiento');
-                $inscrito->tipo_inscrito = "rc_nacimiento";
                 $inscrito->save();
 
                 //Insertar madre
