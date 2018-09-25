@@ -20,6 +20,7 @@ class RCMatrimonioController extends Controller
     {
         $data = RCMatrimonio::
             with('firma', 'denunciante', 'contrayenteUno', 'contrayenteDos')
+            ->orderBy('indicativo_serial', 'DESC')
             ->get();
 
         return response()->json([

@@ -16,6 +16,7 @@ class RCDefuncionController extends Controller
     {
         $data = RCDefuncion::
             with('inscritoDefuncion', 'denunciante', 'testigoUno', 'testigoDos', 'firma')
+            ->orderBy('indicativo_serial', 'DESC')
             ->get();
 
         return response()->json([

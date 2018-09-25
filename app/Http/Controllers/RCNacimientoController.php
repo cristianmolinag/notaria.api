@@ -18,6 +18,7 @@ class RCNacimientoController extends Controller
     {
         $data = RCNacimiento::
             with('inscrito', 'madre', 'padre', 'declarante', 'testigoUno', 'testigoDos', 'antecedente', 'firma')
+            ->orderBy('indicativo_serial', 'DESC')
             ->get();
 
         return response()->json([

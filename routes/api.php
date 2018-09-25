@@ -306,6 +306,8 @@ Route::group(['prefix' => 'cita'], function ($router) {
 
     Route::get('/', 'CitaController@index');
 
+    Route::post('/horas', 'CitaController@getHoras');
+
     Route::get('/{id}', 'CitaController@find');
 
     Route::post('/', 'CitaController@create');

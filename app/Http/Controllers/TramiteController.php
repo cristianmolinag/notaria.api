@@ -46,7 +46,7 @@ class TramiteController extends Controller
 
     public function index()
     {
-        $data = Tramite::with('tipoTramite', 'estadoTramite')->get();
+        $data = Tramite::with('tipoTramite', 'estadoTramite')->orderBy('id', 'DESC')->get();
 
         return response()->json([
             'data' => $data,
@@ -55,7 +55,7 @@ class TramiteController extends Controller
 
     public function buscar($id)
     {
-        $data = Tramite::with('tipoTramite', 'estadoTramite')->where('cliente_id', '=', $id)->get();
+        $data = Tramite::with('tipoTramite', 'estadoTramite')->where('cliente_id', '=', $id)->orderBy('id', 'DESC')->get();
 
         return response()->json([
             'data' => $data,

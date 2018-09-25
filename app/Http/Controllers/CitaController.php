@@ -49,4 +49,15 @@ class CitaController extends Controller
         ], 200);
     }
 
+    public function getHoras(Request $request)
+    {
+        $data = Cita::where('fecha', $request->json('fecha'))
+            ->where('hora', $request->json('hora'))
+            ->get();
+
+        return response()->json([
+            'data' => $data,
+        ], 200);
+    }
+
 }
